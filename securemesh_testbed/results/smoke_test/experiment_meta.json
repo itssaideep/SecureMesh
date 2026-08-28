@@ -1,0 +1,8 @@
+{
+  "scenario": "known_attacks",
+  "attacker": "scripted",
+  "defender": "static",
+  "episodes": 10,
+  "seed": 42,
+  "started_at": "2026-08-28T14:30:48"
+}
