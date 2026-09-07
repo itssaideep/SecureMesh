@@ -146,11 +146,13 @@ Each experiment produces a structured JSON record:
 
 ## Research Questions
 
-| RQ | Question |
-|---|---|
-| **RQ1** | Does an RL attacker achieve higher attack success than a deterministic attacker? |
-| **RQ2** | Does adaptive defence reduce attack success and recovery time? |
-| **RQ3** | Does repeated attacker-defender interaction improve system resilience? |
+| RQ | Focus Area | Question |
+|---|---|---|
+| **RQ1** | **Attacker Efficacy** | How do adaptive AI attackers (RL, LLM) compare against deterministic and heuristic strategies (Scripted, Stealthy) in maximizing Attack Success Rate (ASR) while evading detection? |
+| **RQ2** | **Defender Adaptability** | To what extent do adaptive defence mechanisms (RL, ML) outperform static, rule-based systems in minimizing Mean Time To Detect (MTTD) and Mean Time To Recover (MTTR), especially in zero-day scenarios? |
+| **RQ3** | **System Resilience** | How does the continuous co-evolution of attacker and defender policies impact overall system resilience, specifically regarding service availability and attack impact mitigation over time? |
+| **RQ4** | **LLM vs RL Offense** | What are the comparative advantages of Large Language Model (LLM)-driven offensive strategies versus Reinforcement Learning (RL) agents when encountering previously unseen network topologies? |
+| **RQ5** | **Operational Trade-offs**| What is the trade-off between False Positive Rate (FPR) and Detection Rate (DR) when employing autonomous ML/RL defenders in noisy, simulated IoT environments? |
 
 ### Experiment Matrix
 
