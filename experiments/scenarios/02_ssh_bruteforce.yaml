@@ -1,0 +1,28 @@
+# Scenario 02 — SSH Brute Force
+# The attacker performs repeated SSH authentication attempts.
+# The defender should block the attacker before credentials are compromised.
+
+experiment:
+  id: "SCE-002"
+  name: "SSH Brute Force"
+  target: "ssh"
+  attacker: "aggressive"
+  defender: "static"
+  scenario: "known_attacks"
+  duration: 80
+  episodes: 50
+  seed: 42
+  expected_state: "service_available"
+  tags: ["ssh", "brute_force", "credential", "phase0"]
+  description: >
+    Tests the defender's ability to detect and block SSH brute-force
+    attacks. The aggressive attacker rapidly cycles through authentication
+    attempts with minimal evasion.
+
+hypothesis:
+  text: >
+    The defender should block the SSH brute-force attack within 10 steps,
+    keeping attack success rate below 30%.
+  metric: "attack_success_rate"
+  threshold: 0.3
+  direction: "below"

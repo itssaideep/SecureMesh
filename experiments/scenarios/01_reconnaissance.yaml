@@ -1,0 +1,29 @@
+# Scenario 01 — Reconnaissance
+# The attacker performs network scanning and service fingerprinting.
+# The defender should detect the scan pattern before exploitation begins.
+
+experiment:
+  id: "SCE-001"
+  name: "Reconnaissance Detection"
+  target: "all"
+  attacker: "recon_heavy"
+  defender: "static"
+  scenario: "known_attacks"
+  duration: 60
+  episodes: 50
+  seed: 42
+  expected_state: "service_available"
+  tags: ["reconnaissance", "baseline", "phase0"]
+  description: >
+    Tests whether the defender can detect reconnaissance activity
+    (port scans, service fingerprinting) before the attacker transitions
+    to exploitation. The recon-heavy attacker spends most of its budget
+    on scanning and fingerprinting.
+
+hypothesis:
+  text: >
+    The defender should detect at least 60% of reconnaissance activity
+    without causing service disruption.
+  metric: "detection_rate"
+  threshold: 0.6
+  direction: "above"

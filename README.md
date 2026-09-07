@@ -1,8 +1,8 @@
-# BASTION
+# SecureMesh Testbed
 
-**Bayesian Adversarial Simulation Testbed for IoT Networks**
+**A research-oriented cybersecurity testbed for investigating AI-based adaptive defense under uncertainty.**
 
-BASTION is a research-oriented cybersecurity testbed that formulates the interaction between an attacker and a defender as a Bayesian Markov game. It enables researchers to simulate network topologies, vulnerable IoT services (ESP32/ESP8266), and intrusion detection systems (IDS) in a reproducible, software-only environment.
+SecureMesh formulates the interaction between an attacker and a defender as a Bayesian Markov game. It enables researchers to simulate network topologies, vulnerable IoT services (ESP32/ESP8266), and intrusion detection systems (IDS) in a reproducible, software-only environment.
 
 > **Research Question:** How can a defender make effective adaptive security decisions when the capabilities and behavior of an AI-based attacker are uncertain?
 

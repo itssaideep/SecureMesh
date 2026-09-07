@@ -1,0 +1,18 @@
+{
+  "experiment_id": "SCE-002",
+  "name": "SSH Brute Force",
+  "scenario": "known_attacks",
+  "attacker": "aggressive",
+  "defender": "static",
+  "episodes": 50,
+  "duration": 80,
+  "seed": 42,
+  "target": "ssh",
+  "tags": [
+    "ssh",
+    "brute_force",
+    "credential",
+    "phase0"
+  ],
+  "started_at": "2026-09-07T16:56:24.313575+00:00"
+}

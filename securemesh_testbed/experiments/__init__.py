@@ -1,2 +1,6 @@
 # securemesh_testbed/experiments/__init__.py
-"""Experiment runners and scenario definitions."""
+"""Experiment definitions and runners."""
+
+from .schemas import ExperimentSpec, MatrixSpec, ExperimentRecord
+from .engine import SCEEngine
+from .matrix_runner import MatrixRunner

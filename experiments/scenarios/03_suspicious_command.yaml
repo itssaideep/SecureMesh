@@ -1,0 +1,29 @@
+# Scenario 03 — Suspicious Command Execution
+# The attacker has gained initial access and executes suspicious commands.
+# The defender should detect anomalous command patterns and isolate.
+
+experiment:
+  id: "SCE-003"
+  name: "Suspicious Command Execution"
+  target: "ssh"
+  attacker: "scripted"
+  defender: "static"
+  scenario: "known_attacks"
+  duration: 100
+  episodes: 50
+  seed: 42
+  expected_state: "service_available"
+  tags: ["post_exploit", "command", "detection", "phase0"]
+  description: >
+    Tests detection of post-exploitation activity. The scripted attacker
+    follows a kill-chain from reconnaissance through to persistence,
+    including command execution and lateral movement phases.
+
+hypothesis:
+  text: >
+    The defender should detect suspicious command execution and respond
+    with isolation before persistence is established, maintaining
+    system resilience above 0.5.
+  metric: "system_resilience"
+  threshold: 0.5
+  direction: "above"

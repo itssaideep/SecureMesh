@@ -1,0 +1,24 @@
+# Experiment matrix configuration
+# Defines the full attacker × defender × scenario grid for paper-quality results.
+
+matrix:
+  attackers:
+    - scripted          # Baseline kill-chain (control group)
+    - aggressive        # Fast-cycling deterministic
+    - stealthy          # Slow, evasive deterministic
+    - recon_heavy       # Reconnaissance-focused deterministic
+    - rl                # Adaptive PPO attacker
+    # - llm             # Uncomment when LLM API is configured
+
+  defenders:
+    - static            # Rule-based (control group)
+    - ml                # Random Forest classifier
+    - rl                # Adaptive PPO with Bayesian belief
+
+  scenarios:
+    - known_attacks
+
+  seeds: [42, 123, 456, 789, 1337]
+  episodes_per_seed: 50
+  duration: 100
+  output_dir: "securemesh_testbed/results/matrix"
