@@ -113,39 +113,74 @@ class SecureMeshEnv(gym.Env):
         # Other actions can be added later
         return success, detected, blocked
 
-    def _apply_defender(self, action: DefenderAction) -> Tuple[bool, bool, bool]:
+    def _apply_defender(self, action: DefenderAction,
+                        atk_success: bool) -> Tuple[bool, bool, bool, bool]:
         """Execute defender action.
 
-        Returns (detected, false_positive, service_down) used for reward.
+        Returns (detected, false_positive, service_down, service_restored)
+        used for reward and metrics.
         """
         detected = False
         false_positive = False
         service_down = False
+        service_restored = False
+
+        # Determine if a real threat exists right now
+        any_compromised = any(
+            s.compromised for h in self.network.hosts.values()
+            for s in h.services.values()
+        )
+        any_active_sessions = any(
+            "attacker" in s.active_sessions
+            for h in self.network.hosts.values()
+            for s in h.services.values()
+        )
+        real_threat = any_compromised or any_active_sessions or atk_success
+
         # Simple rule‑based implementation
         if action == DefenderAction.BLOCK_IP:
-            # Block the attacker IP in IDS
             self.ids.block_ip("attacker")
+            if real_threat:
+                detected = True
+            else:
+                false_positive = True
         elif action == DefenderAction.RATE_LIMIT:
             self.ids.rate_limit_ip("attacker")
+            if real_threat:
+                detected = True
+            else:
+                false_positive = True
         elif action == DefenderAction.ISOLATE_SERVICE:
             host = random.choice(list(self.network.hosts.values()))
-            srv = random.choice(list(host.services.values()))
+            svc = random.choice(list(host.services.values()))
             host.isolate()
             service_down = True
+            if svc.compromised:
+                detected = True
+                svc.compromised = False
+                svc.active_sessions.clear()
+                service_restored = True
+            elif not real_threat:
+                false_positive = True
         elif action == DefenderAction.INCREASE_MONITORING:
             self.ids.increase_sensitivity()
         elif action == DefenderAction.ADJUST_IDS_THRESHOLD:
             self.ids.adjust_threshold(0.1)  # tighten
         elif action == DefenderAction.TERMINATE_SESSION:
-            # Remove active sessions from compromised services
+            had_sessions = False
             for h in self.network.hosts.values():
                 for s in h.services.values():
                     if "attacker" in s.active_sessions:
                         s.active_sessions.remove("attacker")
+                        had_sessions = True
+            if had_sessions:
+                detected = True
+                service_restored = True
+            elif not real_threat:
+                false_positive = True
         elif action == DefenderAction.NOOP:
             pass
-        # Detection can be inferred from IDS state later
-        return detected, false_positive, service_down
+        return detected, false_positive, service_down, service_restored
 
     def step(self, actions: Tuple[int, int]):
         """Take a joint attacker/defender step.
@@ -162,14 +197,46 @@ class SecureMeshEnv(gym.Env):
         # Apply attacker first
         atk_success, atk_detected, atk_blocked = self._apply_attacker(attacker_action)
         # Apply defender second
-        def_detected, def_false_positive, def_service_down = self._apply_defender(defender_action)
-        # Compute rewards
-        attacker_r = attacker_reward(atk_success, atk_detected, atk_blocked)
-        defender_r = defender_reward(atk_detected or def_detected, def_false_positive, def_service_down)
+        def_detected, def_false_positive, def_service_down, def_service_restored = \
+            self._apply_defender(defender_action, atk_success)
+
+        # Compute impact score based on attack severity
+        impact_score = 0.0
+        if atk_success:
+            _impact_weights = {
+                AttackerAction.RECON_SCAN: 0.05,
+                AttackerAction.AUTH_BRUTEFORCE: 0.3,
+                AttackerAction.EXPLOIT_SERVICE: 0.6,
+                AttackerAction.MALWARE_DROP: 0.8,
+                AttackerAction.PERSIST_BACKDOOR: 1.0,
+            }
+            impact_score = _impact_weights.get(attacker_action, 0.1)
+
+        # Determine missed attack and attacker isolation
+        missed_attack = atk_success and not atk_detected and not def_detected
+        attacker_isolated = (
+            defender_action == DefenderAction.BLOCK_IP
+            or defender_action == DefenderAction.ISOLATE_SERVICE
+        ) and def_detected
+
+        # Compute rewards (SCE profile by default)
+        attacker_r = attacker_reward(
+            atk_success, atk_detected, atk_blocked,
+            recon_value=(attacker_action == AttackerAction.RECON_SCAN),
+            isolated=attacker_isolated,
+        )
+        defender_r = defender_reward(
+            atk_detected or def_detected, def_false_positive, def_service_down,
+            isolated_attacker=attacker_isolated,
+            missed_attack=missed_attack,
+            service_maintained=not def_service_down,
+        )
+
         # Update step counter
         self.current_step += 1
         if self.current_step >= self.max_steps:
             self.done = True
+
         # Build observations for next step
         raw_state = self.network.snapshot()
         flat = flatten_state(raw_state)
@@ -179,6 +246,10 @@ class SecureMeshEnv(gym.Env):
             "attacker_success": atk_success,
             "attacker_detected": atk_detected,
             "defender_detected": def_detected,
+            "false_positive": def_false_positive,
+            "service_down": def_service_down,
+            "service_restored": def_service_restored,
+            "impact_score": impact_score,
         }
         return (attacker_obs, defender_obs), (attacker_r, defender_r), self.done, info
 

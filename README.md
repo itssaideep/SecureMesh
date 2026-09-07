@@ -133,9 +133,11 @@ Each experiment produces a structured JSON record:
   "metrics": {
     "attack_success_rate": 0.0427,
     "detection_rate": 0.3457,
-    "system_resilience": 1.0000,
+    "false_positive_rate": 0.1240,
+    "attack_impact": 0.0831,
+    "system_resilience": 0.8921,
     "mttd_steps": 10.15,
-    "mttr_steps": 0.00
+    "mttr_steps": 14.20
   }
 }
 ```

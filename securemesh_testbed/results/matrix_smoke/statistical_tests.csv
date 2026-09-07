@@ -1,7 +1,0 @@
-group,metric,baseline_mean,target_mean,U_statistic,p_value,cohens_d,significant
-static_known_attacks,attack_success_rate,0.134,0.0975,1.5,0.6985353583033387,-1.0000000000000002,False
-static_known_attacks,detection_rate,0.19514909711891132,0.20880931296372474,2.0,1.0,0.5045264553139203,False
-static_known_attacks,system_resilience,1.0,1.0,2.0,1.0,0.0,False
-rl_known_attacks,attack_success_rate,0.13599999999999998,0.1275,2.0,1.0,-0.12045836377030505,False
-rl_known_attacks,detection_rate,0.4060825530678472,0.41680411571858933,0.0,0.12133525035848214,1.2334964646498514,False
-rl_known_attacks,system_resilience,1.0,1.0,2.0,1.0,0.0,False

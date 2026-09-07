@@ -1,8 +1,0 @@
-{
-  "scenario": "known_attacks",
-  "attacker": "rl",
-  "defender": "rl",
-  "episodes": 50,
-  "seed": 42,
-  "started_at": "2026-08-28T14:32:58"
-}
