@@ -1,0 +1,18 @@
+{
+  "experiment_id": "MTX-STE-STA-s46",
+  "name": "stealthy vs static (known_attacks)",
+  "scenario": "known_attacks",
+  "attacker": "stealthy",
+  "defender": "static",
+  "episodes": 50,
+  "duration": 100,
+  "seed": 46,
+  "target": "all",
+  "tags": [
+    "matrix",
+    "stealthy",
+    "static",
+    "known_attacks"
+  ],
+  "started_at": "2026-09-07T17:17:41.609911+00:00"
+}

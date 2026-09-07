@@ -1,0 +1,18 @@
+{
+  "experiment_id": "MTX-REC-ML-s43",
+  "name": "recon_heavy vs ml (known_attacks)",
+  "scenario": "known_attacks",
+  "attacker": "recon_heavy",
+  "defender": "ml",
+  "episodes": 50,
+  "duration": 100,
+  "seed": 43,
+  "target": "all",
+  "tags": [
+    "matrix",
+    "recon_heavy",
+    "ml",
+    "known_attacks"
+  ],
+  "started_at": "2026-09-07T17:18:25.544973+00:00"
+}

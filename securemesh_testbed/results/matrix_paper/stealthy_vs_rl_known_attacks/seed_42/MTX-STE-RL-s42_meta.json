@@ -1,0 +1,18 @@
+{
+  "experiment_id": "MTX-STE-RL-s42",
+  "name": "stealthy vs rl (known_attacks)",
+  "scenario": "known_attacks",
+  "attacker": "stealthy",
+  "defender": "rl",
+  "episodes": 50,
+  "duration": 100,
+  "seed": 42,
+  "target": "all",
+  "tags": [
+    "matrix",
+    "stealthy",
+    "rl",
+    "known_attacks"
+  ],
+  "started_at": "2026-09-07T17:18:13.007366+00:00"
+}

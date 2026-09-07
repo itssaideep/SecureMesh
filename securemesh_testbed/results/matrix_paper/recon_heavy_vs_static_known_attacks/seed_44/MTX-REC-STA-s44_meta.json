@@ -1,0 +1,18 @@
+{
+  "experiment_id": "MTX-REC-STA-s44",
+  "name": "recon_heavy vs static (known_attacks)",
+  "scenario": "known_attacks",
+  "attacker": "recon_heavy",
+  "defender": "static",
+  "episodes": 50,
+  "duration": 100,
+  "seed": 44,
+  "target": "all",
+  "tags": [
+    "matrix",
+    "recon_heavy",
+    "static",
+    "known_attacks"
+  ],
+  "started_at": "2026-09-07T17:18:18.003122+00:00"
+}

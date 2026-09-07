@@ -1,0 +1,1354 @@
+{
+  "experiment_id": "MTX-REC-ML-s42",
+  "timestamp": "2026-09-07T17:18:25.146585+00:00",
+  "system_state_initial": {
+    "hosts": {
+      "ssh": {
+        "isolated": false,
+        "services": {
+          "ssh": {
+            "compromised": false,
+            "active_sessions": [
+              "attacker"
+            ]
+          }
+        }
+      },
+      "http": {
+        "isolated": false,
+        "services": {
+          "http": {
+            "compromised": false,
+            "active_sessions": []
+          }
+        }
+      },
+      "mqtt": {
+        "isolated": false,
+        "services": {
+          "mqtt": {
+            "compromised": false,
+            "active_sessions": [
+              "attacker"
+            ]
+          }
+        }
+      }
+    },
+    "iot_devices": {
+      "esp8266-01": {
+        "isolated": false,
+        "compromised": false
+      },
+      "esp32-01": {
+        "isolated": false,
+        "compromised": false
+      }
+    }
+  },
+  "system_state_final": {
+    "hosts": {
+      "ssh": {
+        "isolated": false,
+        "services": {
+          "ssh": {
+            "compromised": true,
+            "active_sessions": [
+              "attacker"
+            ]
+          }
+        }
+      },
+      "http": {
+        "isolated": false,
+        "services": {
+          "http": {
+            "compromised": false,
+            "active_sessions": []
+          }
+        }
+      },
+      "mqtt": {
+        "isolated": false,
+        "services": {
+          "mqtt": {
+            "compromised": true,
+            "active_sessions": [
+              "attacker"
+            ]
+          }
+        }
+      }
+    },
+    "iot_devices": {
+      "esp8266-01": {
+        "isolated": false,
+        "compromised": false
+      },
+      "esp32-01": {
+        "isolated": false,
+        "compromised": false
+      }
+    }
+  },
+  "attacker_policy": "recon_heavy",
+  "defender_policy": "ml",
+  "target": "all",
+  "scenario": "known_attacks",
+  "seed": 42,
+  "episodes": 50,
+  "duration": 100,
+  "hypothesis": null,
+  "metrics": {
+    "attack_success_rate": 0.0604,
+    "attack_success_rate_std": 0.01843474979488466,
+    "attack_success_rate_tail": 0.052000000000000005,
+    "detection_rate": 0.22356349206349205,
+    "detection_rate_std": 0.1805164250289026,
+    "detection_rate_tail": 0.16916666666666666,
+    "false_positive_rate": 0.0,
+    "false_positive_rate_std": 0.0,
+    "false_positive_rate_tail": 0.0,
+    "detection_latency": 19.438,
+    "detection_latency_std": 15.110153701696381,
+    "detection_latency_tail": 26.923333333333336,
+    "service_availability": 1.0,
+    "service_availability_std": 0.0,
+    "service_availability_tail": 1.0,
+    "attack_impact": 0.0,
+    "attack_impact_std": 0.0,
+    "attack_impact_tail": 0.0,
+    "recovery_time": 0.0,
+    "recovery_time_std": 0.0,
+    "recovery_time_tail": 0.0,
+    "attacker_cumulative_reward": -124.6,
+    "attacker_cumulative_reward_std": 232.9653193074025,
+    "attacker_cumulative_reward_tail": -285.0,
+    "defender_cumulative_reward": 1191.0,
+    "defender_cumulative_reward_std": 80.80222769206314,
+    "defender_cumulative_reward_tail": 1155.0,
+    "system_resilience": 1.0,
+    "system_resilience_std": 0.0,
+    "system_resilience_tail": 1.0,
+    "episode_duration_s": 0.11423734664916992,
+    "episode_duration_s_std": 0.008702718664457978,
+    "episode_duration_s_tail": 0.11337487697601319,
+    "total_steps": 100.0,
+    "total_steps_std": 0.0,
+    "total_steps_tail": 100.0,
+    "total_experiment_time_s": 5.724303245544434,
+    "mttd_steps": 19.438,
+    "mttr_steps": 0.0
+  },
+  "timeline": [
+    {
+      "episode": 49,
+      "step": 0,
+      "wall_time": 0.0011055469512939453,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 1,
+      "wall_time": 0.0020933151245117188,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 2,
+      "wall_time": 0.0031011104583740234,
+      "attacker_action": 2,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 3,
+      "wall_time": 0.0040929317474365234,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 4,
+      "wall_time": 0.006000518798828125,
+      "attacker_action": 2,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 5,
+      "wall_time": 0.007109403610229492,
+      "attacker_action": 2,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 6,
+      "wall_time": 0.008114814758300781,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 7,
+      "wall_time": 0.009046316146850586,
+      "attacker_action": 4,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 8,
+      "wall_time": 0.010112285614013672,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 9,
+      "wall_time": 0.011095046997070312,
+      "attacker_action": 5,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 10,
+      "wall_time": 0.01300048828125,
+      "attacker_action": 2,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 11,
+      "wall_time": 0.014098644256591797,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 12,
+      "wall_time": 0.015106916427612305,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 13,
+      "wall_time": 0.01610541343688965,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 14,
+      "wall_time": 0.017000436782836914,
+      "attacker_action": 2,
+      "defender_action": 12,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 15,
+      "wall_time": 0.017999649047851562,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 16,
+      "wall_time": 0.018999338150024414,
+      "attacker_action": 2,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 17,
+      "wall_time": 0.01999950408935547,
+      "attacker_action": 2,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 18,
+      "wall_time": 0.021999835968017578,
+      "attacker_action": 1,
+      "defender_action": 12,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 19,
+      "wall_time": 0.02299952507019043,
+      "attacker_action": 4,
+      "defender_action": 12,
+      "attacker_reward": 99.5,
+      "defender_reward": 9.8,
+      "attacker_success": true,
+      "attacker_detected": false,
+      "defender_detected": false,
+      "event_type": "attack_started"
+    },
+    {
+      "episode": 49,
+      "step": 20,
+      "wall_time": 0.023999691009521484,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 21,
+      "wall_time": 0.02500009536743164,
+      "attacker_action": 5,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 22,
+      "wall_time": 0.026026248931884766,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 23,
+      "wall_time": 0.027001619338989258,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 24,
+      "wall_time": 0.029000043869018555,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 25,
+      "wall_time": 0.03000020980834961,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 26,
+      "wall_time": 0.03099966049194336,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 27,
+      "wall_time": 0.031999826431274414,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 28,
+      "wall_time": 0.032999515533447266,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 29,
+      "wall_time": 0.03399944305419922,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -80.5,
+      "defender_reward": 59.8,
+      "attacker_success": false,
+      "attacker_detected": true,
+      "defender_detected": false,
+      "event_type": "attack_detected",
+      "detection_latency": 10
+    },
+    {
+      "episode": 49,
+      "step": 30,
+      "wall_time": 0.03500223159790039,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 31,
+      "wall_time": 0.03699994087219238,
+      "attacker_action": 4,
+      "defender_action": 3,
+      "attacker_reward": 99.5,
+      "defender_reward": 9.8,
+      "attacker_success": true,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 32,
+      "wall_time": 0.037999868392944336,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 33,
+      "wall_time": 0.03899979591369629,
+      "attacker_action": 5,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 34,
+      "wall_time": 0.039999961853027344,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 35,
+      "wall_time": 0.0410001277923584,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 36,
+      "wall_time": 0.0429997444152832,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 37,
+      "wall_time": 0.04399991035461426,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 38,
+      "wall_time": 0.04499936103820801,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 39,
+      "wall_time": 0.04599952697753906,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 40,
+      "wall_time": 0.04699993133544922,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 41,
+      "wall_time": 0.04800128936767578,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 42,
+      "wall_time": 0.049022674560546875,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 43,
+      "wall_time": 0.050000905990600586,
+      "attacker_action": 4,
+      "defender_action": 3,
+      "attacker_reward": 99.5,
+      "defender_reward": 9.8,
+      "attacker_success": true,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 44,
+      "wall_time": 0.05099964141845703,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 45,
+      "wall_time": 0.05199933052062988,
+      "attacker_action": 5,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 46,
+      "wall_time": 0.053999900817871094,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 47,
+      "wall_time": 0.05503535270690918,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 48,
+      "wall_time": 0.0559999942779541,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 49,
+      "wall_time": 0.05702638626098633,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 50,
+      "wall_time": 0.05801653861999512,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 51,
+      "wall_time": 0.059014320373535156,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 52,
+      "wall_time": 0.06001591682434082,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 53,
+      "wall_time": 0.06200075149536133,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 54,
+      "wall_time": 0.06299877166748047,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 55,
+      "wall_time": 0.06399846076965332,
+      "attacker_action": 4,
+      "defender_action": 3,
+      "attacker_reward": 99.5,
+      "defender_reward": 9.8,
+      "attacker_success": true,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 56,
+      "wall_time": 0.06502008438110352,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 57,
+      "wall_time": 0.06600236892700195,
+      "attacker_action": 5,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 58,
+      "wall_time": 0.06701540946960449,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 59,
+      "wall_time": 0.06799888610839844,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 60,
+      "wall_time": 0.0690152645111084,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 61,
+      "wall_time": 0.06999945640563965,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 62,
+      "wall_time": 0.071014404296875,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 63,
+      "wall_time": 0.0729990005493164,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 64,
+      "wall_time": 0.07401514053344727,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 65,
+      "wall_time": 0.07500052452087402,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 66,
+      "wall_time": 0.07599997520446777,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 67,
+      "wall_time": 0.07699918746948242,
+      "attacker_action": 4,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 68,
+      "wall_time": 0.07801556587219238,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 69,
+      "wall_time": 0.07901716232299805,
+      "attacker_action": 5,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 70,
+      "wall_time": 0.08001565933227539,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 71,
+      "wall_time": 0.08101439476013184,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 72,
+      "wall_time": 0.08302450180053711,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 73,
+      "wall_time": 0.08383440971374512,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 74,
+      "wall_time": 0.08484005928039551,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 75,
+      "wall_time": 0.08583998680114746,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 76,
+      "wall_time": 0.08683943748474121,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 77,
+      "wall_time": 0.08951950073242188,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 78,
+      "wall_time": 0.09075546264648438,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 79,
+      "wall_time": 0.09135246276855469,
+      "attacker_action": 4,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 80,
+      "wall_time": 0.09270167350769043,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 81,
+      "wall_time": 0.09404540061950684,
+      "attacker_action": 5,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 82,
+      "wall_time": 0.09484505653381348,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 83,
+      "wall_time": 0.09775328636169434,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 84,
+      "wall_time": 0.09894037246704102,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 85,
+      "wall_time": 0.1000058650970459,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 86,
+      "wall_time": 0.100555419921875,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 87,
+      "wall_time": 0.10156059265136719,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 88,
+      "wall_time": 0.10392284393310547,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -50.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 89,
+      "wall_time": 0.10392284393310547,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -80.5,
+      "defender_reward": 59.8,
+      "attacker_success": false,
+      "attacker_detected": true,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 90,
+      "wall_time": 0.10516476631164551,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 91,
+      "wall_time": 0.10648107528686523,
+      "attacker_action": 4,
+      "defender_action": 3,
+      "attacker_reward": 99.5,
+      "defender_reward": 9.8,
+      "attacker_success": true,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 92,
+      "wall_time": 0.10749316215515137,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 93,
+      "wall_time": 0.10860824584960938,
+      "attacker_action": 5,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 94,
+      "wall_time": 0.11048674583435059,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 95,
+      "wall_time": 0.11149144172668457,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 96,
+      "wall_time": 0.11249065399169922,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 97,
+      "wall_time": 0.11348986625671387,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 98,
+      "wall_time": 0.11459827423095703,
+      "attacker_action": 2,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    },
+    {
+      "episode": 49,
+      "step": 99,
+      "wall_time": 0.11558771133422852,
+      "attacker_action": 1,
+      "defender_action": 3,
+      "attacker_reward": -0.5,
+      "defender_reward": 9.8,
+      "attacker_success": false,
+      "attacker_detected": false,
+      "defender_detected": false
+    }
+  ],
+  "tags": [
+    "matrix",
+    "recon_heavy",
+    "ml",
+    "known_attacks"
+  ]
+}

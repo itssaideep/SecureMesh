@@ -107,7 +107,9 @@ class SCEEngine:
         self.output_base = output_base
 
     def run(self, spec: ExperimentSpec,
-            output_dir: Optional[str] = None) -> ExperimentRecord:
+            output_dir: Optional[str] = None,
+            event_callback=None,
+            episode_callback=None) -> ExperimentRecord:
         """Execute a single SCE experiment from its specification.
 
         Parameters
@@ -182,6 +184,7 @@ class SCEEngine:
             ep_events = self._run_episode(
                 env, attacker, defender, spec, ep,
                 logger, has_belief, belief_history,
+                event_callback, episode_callback
             )
             all_timeline_events.extend(ep_events["events"])
             all_episode_metrics.append(ep_events["metrics"])
@@ -283,7 +286,8 @@ class SCEEngine:
         defender.fit()
 
     def _run_episode(self, env, attacker, defender, spec, episode,
-                     logger, has_belief, belief_history):
+                     logger, has_belief, belief_history,
+                     event_callback=None, episode_callback=None):
         """Run a single episode and return events + metrics."""
         atk_obs, def_obs = env.reset(seed=spec.seed + episode)
         if has_belief:
@@ -355,6 +359,13 @@ class SCEEngine:
             atk_rewards.append(a_rew)
             def_rewards.append(d_rew)
             logger.log_step(episode, step_idx, event)
+            if event_callback:
+                # Provide a copy and map Enums to strings if needed
+                import copy
+                cb_event = copy.deepcopy(event)
+                if has_belief:
+                    cb_event["defender_belief"] = defender.belief.tolist()
+                event_callback(cb_event)
 
             atk_obs, def_obs = next_a_obs, next_d_obs
             step_idx += 1
@@ -364,6 +375,8 @@ class SCEEngine:
         ep_metrics["episode_duration_s"] = time.time() - ep_start
         ep_metrics["total_steps"] = step_idx
         logger.log_episode(episode, ep_metrics)
+        if episode_callback:
+            episode_callback(episode, ep_metrics)
 
         return {"events": events, "metrics": ep_metrics}
 

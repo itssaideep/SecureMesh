@@ -1,0 +1,18 @@
+{
+  "experiment_id": "MTX-RL-STA-s46",
+  "name": "rl vs static (known_attacks)",
+  "scenario": "known_attacks",
+  "attacker": "rl",
+  "defender": "static",
+  "episodes": 50,
+  "duration": 100,
+  "seed": 46,
+  "target": "all",
+  "tags": [
+    "matrix",
+    "rl",
+    "static",
+    "known_attacks"
+  ],
+  "started_at": "2026-09-07T17:18:56.840493+00:00"
+}
