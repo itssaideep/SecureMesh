@@ -1,0 +1,18 @@
+{
+  "experiment_id": "MTX-SCR-RL-s42",
+  "name": "scripted vs rl (known_attacks)",
+  "scenario": "known_attacks",
+  "attacker": "scripted",
+  "defender": "rl",
+  "episodes": 20,
+  "duration": 100,
+  "seed": 42,
+  "target": "all",
+  "tags": [
+    "matrix",
+    "scripted",
+    "rl",
+    "known_attacks"
+  ],
+  "started_at": "2026-09-07T16:56:59.969312+00:00"
+}

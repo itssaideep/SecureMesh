@@ -1,22 +1,52 @@
-# SecureMesh Testbed
+# SecureMesh-SCE
 
-**A research-oriented cybersecurity testbed for investigating AI-based adaptive defense under uncertainty.**
+**AI-assisted Security Chaos Engineering testbed for studying adaptive attack and defence in IoT environments.**
 
-SecureMesh formulates the interaction between an attacker and a defender as a Bayesian Markov game. It enables researchers to simulate network topologies, vulnerable IoT services (ESP32/ESP8266), and intrusion detection systems (IDS) in a reproducible, software-only environment.
+SecureMesh-SCE extends the SecureMesh honeypot into a controlled, reproducible security-chaos environment. It formulates the interaction between an attacker and a defender as a Bayesian Markov game, and evaluates whether adaptive AI attackers and defenders change attack effectiveness and system resilience.
 
-> **Research Question:** How can a defender make effective adaptive security decisions when the capabilities and behavior of an AI-based attacker are uncertain?
+> **Research Question:** Can adaptive AI-based attackers discover and exploit security weaknesses in an IoT environment that are missed by deterministic attack strategies?
 
 ---
 
-## Table of Contents
+## Architecture
 
-- [Key Features](#key-features)
-- [Architecture](#architecture)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Results](#results)
-- [Contributing](#contributing)
-- [License](#license)
+```
+                     SecureMesh-SCE
+                          |
+            +-------------+-------------+
+            |                           |
+      AI ATTACKER                  AI DEFENDER
+      (7 agent types)             (3 agent types)
+            |                           |
+       chooses action            chooses response
+            |                           |
+            +-------------+-------------+
+                          |
+                +---------+---------+
+                |   IoT TESTBED     |
+                |                   |
+                | SSH Service       |
+                | HTTP Service      |
+                | ESP32 Sim (MQTT)  |
+                | ESP8266 Sim       |
+                | IDS Engine        |
+                +---------+---------+
+                          |
+                     telemetry
+                          |
+                SCE Experiment Engine
+                          |
+              +-----------+-----------+
+              |                       |
+         Metrics               Experiment Record
+         (ASR, DR, MTTD,      (JSON + CSV + JSONL)
+          MTTR, Resilience)
+              +-----------+-----------+
+                          |
+                   Matrix Runner
+                   (Statistical analysis,
+                    LaTeX / Markdown tables)
+```
 
 ---
 
@@ -24,28 +54,12 @@ SecureMesh formulates the interaction between an attacker and a defender as a Ba
 
 | Category | Details |
 |---|---|
-| **AI vs. AI Simulations** | Pit different agent types against each other — `RandomAttacker`, `ScriptedAttacker` (kill-chain), `RLAttacker` (adaptive PPO) vs. `StaticDefender` (heuristics), `MLDefender` (Random Forest), `RLDefender` (adaptive PPO). |
-| **Bayesian Belief Tracking** | The RL Defender maintains and dynamically updates a probability distribution over attacker type (opportunistic, sophisticated, stealthy) based on observed behavior. |
-| **Realistic IoT Simulation** | Simulated ESP8266 and ESP32 endpoints mimicking real-world vulnerabilities (MQTT, CoAP, OTA, credential-capture) — no physical hardware required. |
-| **Evaluation Framework** | Built-in metrics (Attack Success Rate, Detection Rate, System Resilience, Adaptation KL Divergence), structured logging, and automated Matplotlib visualizations. |
-| **React Dashboard** | Frontend for visualizing experiment results, reward curves, and belief evolution *(work in progress)*. |
-
----
-
-## Architecture
-
-```
-securemesh_testbed/          Core Python package
-├── agents/                  Attacker & defender implementations (incl. NumPy PPO)
-├── environment/             Network simulators, IDS engines, IoT firmware mocks
-├── game/                    Gymnasium-compatible Markov game formulation
-├── experiments/             CLI runners and scenario definitions
-└── evaluation/              Metrics, structured logging, plotting utilities
-
-frontend/                    React + Vite dashboard (TailwindCSS)
-backend/                     FastAPI server (legacy, preserved for reference)
-esp8266/                     C++ firmware (legacy, preserved for reference)
-```
+| **SCE Experiment Engine** | YAML-driven experiment lifecycle following the SCENE methodology (Jolak et al.). Hypothesis testing, time-stamped telemetry, structured JSON records. |
+| **7 Attacker Types** | Random, Scripted (kill-chain), Aggressive, Stealthy, Recon-Heavy, RL (PPO), LLM-assisted (Gemini + Ollama). |
+| **3 Defender Types** | Static (rule-based), ML (Random Forest), RL (PPO + Bayesian belief tracking). |
+| **Experiment Matrix** | Run full attacker x defender grids with statistical testing (Mann-Whitney U, Cohen's d), LaTeX and Markdown table export. |
+| **Realistic IoT Simulation** | ESP32/ESP8266 simulators with MQTT, CoAP, OTA attack surfaces. SSH and HTTP service simulators with IDS engine. |
+| **Evaluation Framework** | Attack success rate, detection rate, MTTD, MTTR, false positive rate, system resilience, service availability. |
 
 ---
 
@@ -54,55 +68,149 @@ esp8266/                     C++ firmware (legacy, preserved for reference)
 ### Prerequisites
 
 - Python 3.10+
-- Node.js (for the frontend dashboard)
+- (Optional) Ollama for local LLM attacker
+- (Optional) Gemini API key for cloud LLM attacker
 
 ### Installation
 
-A virtual environment is recommended. The testbed relies on lightweight dependencies — no heavy PyTorch requirement.
-
 ```bash
-cd securemesh_testbed
-pip install numpy gymnasium matplotlib pandas scikit-learn tabulate
+pip install numpy gymnasium matplotlib pandas scikit-learn tabulate pyyaml
 ```
 
----
-
-## Usage
-
-Run a simulated experiment from the CLI. The following example pits a scripted kill-chain attacker against an adaptive RL defender:
+### Quick Start
 
 ```bash
+# Run a single SCE experiment from YAML
+python -m securemesh_testbed.experiments.engine \
+    --config experiments/scenarios/02_ssh_bruteforce.yaml
+
+# Run the original Markov game experiment
 python -m securemesh_testbed.experiments.run_experiment \
-    --scenario known_attacks \
-    --attacker scripted \
-    --defender rl \
-    --episodes 50 \
-    --seed 42 \
-    --output securemesh_testbed/results/my_first_experiment
+    --scenario known_attacks --attacker scripted --defender rl \
+    --episodes 50 --seed 42
+
+# Run a full experiment matrix (3 attackers x 2 defenders x 2 seeds)
+python -m securemesh_testbed.experiments.matrix_runner \
+    --attackers scripted aggressive rl \
+    --defenders static rl \
+    --seeds 2 --episodes 50
 ```
 
-The experiment runner will execute the Markov game, train the RL agents if applicable, and generate CSV logs and PNG plots in the specified output directory.
+---
+
+## SCE Experiment Format
+
+Experiments are defined in YAML:
+
+```yaml
+experiment:
+  id: "SCE-002"
+  name: "SSH Brute Force"
+  target: "ssh"
+  attacker: "aggressive"
+  defender: "static"
+  scenario: "known_attacks"
+  duration: 80
+  episodes: 50
+  seed: 42
+
+hypothesis:
+  text: "The defender should block the SSH brute-force attack
+         within 10 steps, keeping attack success rate below 30%."
+  metric: "attack_success_rate"
+  threshold: 0.3
+  direction: "below"
+```
+
+Each experiment produces a structured JSON record:
+
+```json
+{
+  "experiment_id": "SCE-002",
+  "attacker_policy": "aggressive",
+  "defender_policy": "static",
+  "hypothesis": {"result": "PASS", "actual_value": 0.0427},
+  "metrics": {
+    "attack_success_rate": 0.0427,
+    "detection_rate": 0.3457,
+    "system_resilience": 1.0000,
+    "mttd_steps": 10.15,
+    "mttr_steps": 0.00
+  }
+}
+```
 
 ---
 
-## Results
+## Research Questions
 
-Navigate to the output directory to view the generated plots:
-
-| File | Description |
+| RQ | Question |
 |---|---|
-| `reward_curves.png` | Compares attacker and defender cumulative rewards over time. |
-| `belief_evolution.png` | Shows how the defender's Bayesian belief about the attacker type evolves during an episode. |
-| `detection_rate.png` | Detection rate of the IDS over time. |
-| `service_availability.png` | Service availability across simulated endpoints. |
+| **RQ1** | Does an RL attacker achieve higher attack success than a deterministic attacker? |
+| **RQ2** | Does adaptive defence reduce attack success and recovery time? |
+| **RQ3** | Does repeated attacker-defender interaction improve system resilience? |
 
-> **Note:** An interactive React dashboard for exploring these results is under active development.
+### Experiment Matrix
+
+```
+              Defender
+            Static    ML    RL
+Attacker
+  Scripted    A       B     C
+  Aggressive  D       E     F
+  Stealthy    G       H     I
+  ReconHeavy  J       K     L
+  RL          M       N     O
+  LLM         P       Q     R
+```
 
 ---
 
-## Contributing
+## Project Structure
 
-Contributions are welcome. Please open an issue or submit a pull request.
+```
+SecureMesh-SCE/
+|
+|-- securemesh_testbed/           Core Python package
+|   |-- agents/
+|   |   |-- attacker/             7 attacker implementations
+|   |   |-- defender/             3 defender implementations
+|   |   |-- common/              Shared PPO agent
+|   |-- environment/              Network, service, IoT, IDS simulators
+|   |-- game/                     Gymnasium Markov game
+|   |-- experiments/              SCE engine, matrix runner, scenarios
+|   |-- evaluation/               Metrics, logging, plotting, comparison
+|   |-- config/                   Scenario configurations
+|   |-- results/                  Experiment output
+|
+|-- experiments/
+|   |-- scenarios/                YAML experiment definitions
+|   |-- matrix_config.yaml        Matrix runner configuration
+|
+|-- docs/                         Architecture and methodology docs
+|-- frontend/                     React dashboard (WIP)
+|-- backend/                      FastAPI server
+|-- esp8266/                      Hardware firmware
+|-- docker-compose.yml            Cowrie + MongoDB stack
+```
+
+---
+
+## LLM Attacker Configuration
+
+Set environment variables to enable the LLM-assisted attacker:
+
+```bash
+# Gemini (cloud)
+export GEMINI_API_KEY="your-api-key"
+export LLM_PROVIDER="gemini"
+
+# Ollama (local)
+export LLM_PROVIDER="ollama"
+export OLLAMA_MODEL="llama3.2"
+```
+
+The LLM attacker falls back to random action selection when no provider is available.
 
 ---
 

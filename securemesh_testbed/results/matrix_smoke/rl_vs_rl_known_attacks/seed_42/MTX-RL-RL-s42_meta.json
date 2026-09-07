@@ -1,0 +1,18 @@
+{
+  "experiment_id": "MTX-RL-RL-s42",
+  "name": "rl vs rl (known_attacks)",
+  "scenario": "known_attacks",
+  "attacker": "rl",
+  "defender": "rl",
+  "episodes": 20,
+  "duration": 100,
+  "seed": 42,
+  "target": "all",
+  "tags": [
+    "matrix",
+    "rl",
+    "rl",
+    "known_attacks"
+  ],
+  "started_at": "2026-09-07T16:57:06.384556+00:00"
+}

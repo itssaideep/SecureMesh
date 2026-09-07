@@ -1,0 +1,18 @@
+{
+  "experiment_id": "MTX-SCR-STA-s42",
+  "name": "scripted vs static (known_attacks)",
+  "scenario": "known_attacks",
+  "attacker": "scripted",
+  "defender": "static",
+  "episodes": 20,
+  "duration": 100,
+  "seed": 42,
+  "target": "all",
+  "tags": [
+    "matrix",
+    "scripted",
+    "static",
+    "known_attacks"
+  ],
+  "started_at": "2026-09-07T16:56:59.248857+00:00"
+}
