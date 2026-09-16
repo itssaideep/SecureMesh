@@ -1,1 +1,0 @@
-# SecureMesh testbed package initialization

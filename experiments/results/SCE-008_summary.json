@@ -1,0 +1,96 @@
+{
+  "experiment_id": "SCE-008",
+  "name": "LLM Offensive Strategy vs Bayesian Defender",
+  "attacker": "llm",
+  "defender": "bayesian_rl",
+  "episodes": 1,
+  "duration": 60,
+  "seed": 42,
+  "steady_state": {
+    "verified": true,
+    "mean_availability": 1.0,
+    "availability_std": 0.0,
+    "mean_failed_auth_rate": 0.0,
+    "samples_analyzed": 5
+  },
+  "hypothesis_result": {
+    "metric": "detection_rate",
+    "text": "The Bayesian defender will detect and mitigate LLM-generated attack sequences with a detection rate of at least 65%.",
+    "threshold": 0.65,
+    "direction": "above",
+    "observed_mean": 0.1404,
+    "ci_95": [
+      0.1404,
+      0.1404
+    ],
+    "verdict": "FAIL",
+    "passed": false
+  },
+  "aggregate_metrics": {
+    "attack_success_rate": 0.03508771929824561,
+    "detection_rate": 0.14035087719298245,
+    "precision": 0.5333333333333333,
+    "recall": 1.0,
+    "f1_score": 0.6956521739130436,
+    "service_availability": 0.07916666666666666,
+    "brier_score": 1.603026521250101,
+    "intervention_cost": 579.0
+  },
+  "risk_register": [
+    {
+      "risk_id": "RSK-01",
+      "threat_description": "Unauthorized SSH brute-force credential stuffing",
+      "stride": "Spoofing",
+      "initial_likelihood": 4,
+      "initial_impact": 4,
+      "initial_risk": 16,
+      "control": "Rate Limiting & Honeypot Redirection",
+      "control_maturity": 3.0,
+      "residual_risk": 8.0
+    },
+    {
+      "risk_id": "RSK-02",
+      "threat_description": "Remote command injection in web gateway",
+      "stride": "Elevation of Privilege",
+      "initial_likelihood": 4,
+      "initial_impact": 5,
+      "initial_risk": 20,
+      "control": "Service Isolation & Input Sanitization",
+      "control_maturity": 2.5,
+      "residual_risk": 11.67
+    },
+    {
+      "risk_id": "RSK-03",
+      "threat_description": "IoT endpoint buffer overflow & OOM crash",
+      "stride": "Denial of Service",
+      "initial_likelihood": 5,
+      "initial_impact": 3,
+      "initial_risk": 15,
+      "control": "Firmware Verification & IoT Isolation",
+      "control_maturity": 2.0,
+      "residual_risk": 10.0
+    },
+    {
+      "risk_id": "RSK-04",
+      "threat_description": "Lateral movement via compromised mesh nodes",
+      "stride": "Elevation of Privilege",
+      "initial_likelihood": 3,
+      "initial_impact": 4,
+      "initial_risk": 12,
+      "control": "Micro-segmentation & Dynamic IP Blocking",
+      "control_maturity": 3.0,
+      "residual_risk": 6.0
+    },
+    {
+      "risk_id": "RSK-05",
+      "threat_description": "Stealthy C2 beaconing & data exfiltration",
+      "stride": "Information Disclosure",
+      "initial_likelihood": 3,
+      "initial_impact": 5,
+      "initial_risk": 15,
+      "control": "Bayesian Anomaly Tracking & IDS Tuning",
+      "control_maturity": 2.5,
+      "residual_risk": 8.75
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+# experiments/scenarios/01_baseline.yaml
+# Experiment 1: Deterministic Baseline
+# Pits Level 0 Scripted Attacker against Level 1 Static Rule-Based Defender.
+
+experiment:
+  id: "SCE-001"
+  name: "Deterministic Baseline"
+  target: "all"
+  attacker: "scripted"
+  defender: "static"
+  duration: 60
+  episodes: 20
+  seed: 42
+  expected_state: "service_available"
+  tags: ["baseline", "deterministic", "level0_vs_level1"]
+  description: >
+    Evaluates baseline performance where both attacker and defender
+    follow deterministic non-adaptive strategies. Establishes the
+    empirical benchmark for detection latency and service disruption.
+
+hypothesis:
+  text: >
+    The static defender will detect predictable scripted kill-chains
+    with at least 50% detection rate without compromising service availability.
+  metric: "detection_rate"
+  threshold: 0.50
+  direction: "above"

@@ -1,0 +1,27 @@
+# experiments/scenarios/06_bayesian_defense.yaml
+# Experiment 6: Bayesian Belief Tracking Advantage
+# Pits Level 3 Adaptive PPO Attacker against Level 4 Bayesian RL Defender.
+
+experiment:
+  id: "SCE-006"
+  name: "Bayesian Defense under Attacker Uncertainty"
+  target: "all"
+  attacker: "ppo"
+  defender: "bayesian_rl"
+  duration: 60
+  episodes: 25
+  seed: 42
+  expected_state: "service_available"
+  tags: ["bayesian_rl", "uncertainty_advantage", "level3_vs_level4"]
+  description: >
+    Investigates the core research question: Does explicit Bayesian posterior
+    tracking over hidden adversary types provide superior resilience and lower
+    attack success rate compared to standard un-augmented RL defenses?
+
+hypothesis:
+  text: >
+    The Bayesian RL defender will achieve lower attack success rate and higher
+    service availability than the non-Bayesian RL defender.
+  metric: "attack_success_rate"
+  threshold: 0.30
+  direction: "below"

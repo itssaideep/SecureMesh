@@ -3,12 +3,11 @@ from pydantic import BaseModel
 import asyncio
 import json
 import uuid
+from typing import Optional
 
-# SecureMesh-SCE Imports
-from securemesh_testbed.experiments.engine import SCEEngine
-from securemesh_testbed.experiments.schemas import ExperimentSpec
-from securemesh_testbed.agents.attacker import AttackerAction
-from securemesh_testbed.agents.defender import DefenderAction
+# SecureMesh-SCE Imports (Research-Grade)
+from securemesh_sce.experiments.engine import SCENEExperimentEngine, ExperimentConfig
+from securemesh_sce.game.actions import AttackerAction, DefenderAction
 
 router = APIRouter()
 
@@ -25,11 +24,10 @@ class ConnectionManager:
             self.active_connections.remove(websocket)
 
     async def broadcast(self, message: dict):
-        # Broadcast asynchronously
         for connection in self.active_connections:
             try:
                 await connection.send_text(json.dumps(message))
-            except:
+            except Exception:
                 pass
 
 manager = ConnectionManager()
@@ -41,19 +39,18 @@ class ExperimentRequest(BaseModel):
     episodes: int = 5
 
 def run_experiment_task(request: ExperimentRequest, loop: asyncio.AbstractEventLoop):
-    engine = SCEEngine()
-    spec = ExperimentSpec(
-        id=f"live-{uuid.uuid4().hex[:8]}",
+    spec_id = f"live-{uuid.uuid4().hex[:8]}"
+    config = ExperimentConfig(
+        id=spec_id,
         name="Live Web Experiment",
-        attacker=request.attacker,
-        defender=request.defender,
-        scenario=request.scenario,
+        attacker_name=request.attacker,
+        defender_name=request.defender,
         episodes=request.episodes,
-        duration=100
+        duration=60,
     )
+    engine = SCENEExperimentEngine(config=config)
 
     def on_event(event: dict):
-        # Convert enums to names if they are enums
         cb_event = event.copy()
         if 'attacker_action' in cb_event and isinstance(cb_event['attacker_action'], AttackerAction):
             cb_event['attacker_action'] = cb_event['attacker_action'].name
@@ -73,15 +70,15 @@ def run_experiment_task(request: ExperimentRequest, loop: asyncio.AbstractEventL
 
     # Broadcast start
     asyncio.run_coroutine_threadsafe(
-        manager.broadcast({"type": "status", "message": "Experiment started", "spec": spec.model_dump() if hasattr(spec, 'model_dump') else spec.dict()}),
+        manager.broadcast({"type": "status", "message": "Experiment started", "spec": {"id": spec_id, "attacker": request.attacker, "defender": request.defender}}),
         loop
     )
     
     # Run engine synchronously in background thread
     try:
-        record = engine.run(spec, event_callback=on_event, episode_callback=on_episode)
+        summary = engine.run(event_callback=on_event, episode_callback=on_episode)
         asyncio.run_coroutine_threadsafe(
-            manager.broadcast({"type": "status", "message": "Experiment completed", "metrics": record.metrics}),
+            manager.broadcast({"type": "status", "message": "Experiment completed", "metrics": summary.get("aggregate_metrics", {})}),
             loop
         )
     except Exception as e:
@@ -103,7 +100,6 @@ async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
     try:
         while True:
-            data = await websocket.receive_text()
-            # Simple ping/pong if needed
+            await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(websocket)

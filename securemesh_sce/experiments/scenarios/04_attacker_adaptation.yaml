@@ -1,0 +1,27 @@
+# experiments/scenarios/04_attacker_adaptation.yaml
+# Experiment 4: Attacker Adaptation via Autonomous PPO
+# Pits Level 3 Adaptive PPO Attacker against Level 1 Static Defender.
+
+experiment:
+  id: "SCE-004"
+  name: "Adaptive PPO Attacker vs Static Defender"
+  target: "all"
+  attacker: "ppo"
+  defender: "static"
+  duration: 60
+  episodes: 25
+  seed: 42
+  expected_state: "service_available"
+  tags: ["adaptive_attack", "ppo", "level3_vs_level1"]
+  description: >
+    Tests whether an adaptive reinforcement learning attacker learns to discover
+    weaknesses in deterministic static defenses, exploiting blind spots and
+    evading threshold-based detections.
+
+hypothesis:
+  text: >
+    The adaptive PPO attacker will achieve a higher attack success rate
+    than scripted deterministic attacks against static defense.
+  metric: "attack_success_rate"
+  threshold: 0.35
+  direction: "above"
