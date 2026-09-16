@@ -43,9 +43,9 @@ SecureMesh-SCE models this dynamic interaction as a **two-player Bayesian Markov
                      +-------------------+-------------------+
                      |                                       |
              SIMULATED TESTBED                       PHYSICAL MESH
-           - Network Topology (DMZ, Corp, IoT)     - ESP8266 Sensor Nodes
-           - SSH Simulator (Cowrie Semantics)      - ESP32 Gateway Node
-           - HTTP/CGI Web Service                  - Local MQTT Broker
+           - Network Topology (DMZ, Corp, IoT)     - ESP8266 Sensor Nodes (Port 80)
+           - SSH Simulator (Cowrie Semantics)      - ESP32 Gateway Node (OTA/Mesh)
+           - HTTP/CGI Web Service                  - Local MQTT Broker (Mosquitto)
            - Mosquitto MQTT Broker                 - Docker Container Stack
                      |                                       |
                      +-------------------+-------------------+
@@ -72,7 +72,7 @@ SecureMesh-SCE models this dynamic interaction as a **two-player Bayesian Markov
 2. **Level 1 — Behavioral Cloning (`BCAttacker`)**: Supervised policy trained on demonstration trajectories.
 3. **Level 2 — GAIL (`GAILAttacker`)**: Generative Adversarial Imitation Learning matching adversary state-action occupancy distributions.
 4. **Level 3 — Adaptive PPO (`PPOAttacker`)**: Autonomous reinforcement learning discovering defensive blind spots via clipped policy gradients.
-5. **Level 4 — LLM-Assisted (`LLMAttacker`)**: Strategic prompt reasoning with Gemini 2.0 Flash or Ollama Llama 3.1:8b, with bounded JSON action schemas.
+5. **Level 4 — LLM-Assisted (`LLMAttacker`)**: Strategic prompt reasoning with **Google Gemini 2.0 Flash** or local **Ollama Llama 3.1:8b**, with bounded JSON action schemas and fallback logging.
 
 ### Defence Hierarchy (Levels 1–5)
 1. **Level 1 — Static (`StaticDefender`)**: Heuristic threshold baseline.
@@ -108,18 +108,78 @@ Every scenario executes according to the formal SCENE framework:
 | **Exp 5** | `05_co_adaptation.yaml` | PPO | RL | Dual-learning co-adaptation dynamics |
 | **Exp 6** | `06_bayesian_defense.yaml` | PPO | Bayesian RL | Uncertainty advantage of Bayesian belief |
 | **Exp 7** | `07_constrained_safety.yaml` | PPO | Constrained | Safety-gated bounded autonomy |
-| **Exp 8** | `08_llm_offensive.yaml` | LLM | Bayesian RL | Generative LLM offensive planning |
+| **Exp 8** | `08_llm_offensive.yaml` | LLM | Bayesian RL | Generative LLM offensive planning (Llama 3.1 / Gemini) |
 
 ---
 
-## 6. Quick Start & Reproducibility
+## 6. Physical ESP8266 Hardware Honeypot
 
-### Prerequisites & Installation
+The platform supports both simulated software nodes and **physical ESP8266 hardware** deployed into the testbed:
+
+### Firmware Architecture (`esp8266/esp8266.ino`)
+- **Portal Trap (`GET /`)**: Emulated smart device login page.
+- **Brute-Force Trap (`POST /login`)**: Captures attacker credentials, returning HTTP 401 while forwarding structured alerts to the backend.
+- **CGI Injection Trap (`GET /cgi-bin/status?cmd=...`)**: Detects remote command execution probes.
+- **Telemetry (`GET /status`)**: Streams live free heap bytes, RSSI, and uptime.
+
+### Flashing via PlatformIO
+```powershell
+# Set your Wi-Fi SSID and password in esp8266/esp8266.ino, then flash:
+pio run -d esp8266 --target upload
+
+# Open the serial monitor (115200 baud):
+pio device monitor -b 115200
+```
+*(Note: ESP8266 requires a 2.4 GHz Wi-Fi network; ensure your mobile hotspot or router has the 2.4 GHz band enabled).*
+
+### Physical Hardware Bridge
+Use `PhysicalESP8266Bridge` in Python to connect your physical board to the testbed:
+```python
+from securemesh_sce.environment.iot import PhysicalESP8266Bridge
+
+bridge = PhysicalESP8266Bridge(device_ip="10.174.55.XX")
+print("Online:", bridge.is_reachable())
+print("Live Telemetry:", bridge.get_hardware_telemetry())
+```
+
+---
+
+## 7. LLM Attacker Configuration (Llama 3.1 & Gemini)
+
+SecureMesh-SCE supports both local and cloud LLMs for Level 4 offensive reasoning:
+
+### 1. Local LLM via Ollama (Llama 3.1:8b)
+```powershell
+# Ensure Ollama is running with Llama 3.1
+ollama run llama3.1:8b
+
+# Run Experiment 8 with Ollama
+$env:LLM_PROVIDER="ollama"
+python -m securemesh_sce.experiments.runner --config experiments/scenarios/08_llm_offensive.yaml --episodes 5
+```
+
+### 2. Cloud LLM via Google Gemini
+Set your `GEMINI_API_KEY` in `.env`:
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.0-flash
+LLM_PROVIDER=gemini
+```
+Then execute:
+```powershell
+python -m securemesh_sce.experiments.runner --config experiments/scenarios/08_llm_offensive.yaml --episodes 5
+```
+
+---
+
+## 8. Quick Start & Reproducibility
+
+### Installation
 ```bash
 git clone https://github.com/itssaideep/SecureMesh.git
 cd SecureMesh
 
-# Install unified research dependencies
+# Install unified dependencies
 pip install -r requirements.txt
 ```
 
@@ -128,7 +188,7 @@ pip install -r requirements.txt
 python -m pytest tests/ -v
 ```
 
-### Run a Single SCENE Scenario
+### Run Single SCENE Experiments
 ```bash
 # Run Baseline (Experiment 1)
 python -m securemesh_sce.experiments.runner --config experiments/scenarios/01_baseline.yaml --episodes 10
@@ -136,13 +196,12 @@ python -m securemesh_sce.experiments.runner --config experiments/scenarios/01_ba
 # Run Bayesian Defense (Experiment 6)
 python -m securemesh_sce.experiments.runner --config experiments/scenarios/06_bayesian_defense.yaml --episodes 10
 
-# Run Constrained Safety Gating (Experiment 7)
+# Run Safety Gated Autonomy (Experiment 7)
 python -m securemesh_sce.experiments.runner --config experiments/scenarios/07_constrained_safety.yaml --episodes 10
 ```
 
-### Run Full Multi-Seed Matrix & Ablation Suite
+### Run Multi-Seed Matrix & Ablation Suite
 ```bash
-# Executes 5x5 Attacker x Defender matrix across multiple seeds
 python scripts/run_all_ablations.py --episodes 5 --seeds 42 101 202 --duration 50
 ```
 
@@ -150,7 +209,7 @@ python scripts/run_all_ablations.py --episodes 5 --seeds 42 101 202 --duration 5
 ```bash
 python scripts/generate_paper_artifacts.py
 ```
-Emits:
+Outputs in `experiments/results/`:
 - `fig_belief_trajectory.png` / `.svg` (Bayesian posterior convergence)
 - `fig_calibration_curve.png` / `.svg` (Reliability diagram with ECE)
 - `fig_ablation_comparison.png` / `.svg` (Defensive component ablation)
@@ -158,9 +217,15 @@ Emits:
 - `tab_ablation_study.tex` (LaTeX ablation table)
 - `risk_register.md` (Updated residual risk register)
 
+### Launch FastAPI Backend
+```powershell
+python -m uvicorn backend.app:app --host 0.0.0.0 --port 8000
+```
+Interactive documentation available at `http://localhost:8000/docs` with live WebSocket streaming on `/api/experiment/ws`.
+
 ---
 
-## 7. Research Documentation
+## 9. Research Documentation
 
 - [Methodology & Game Formulation](docs/methodology.md)
 - [TAFFAC Threat Model & MITRE ATT&CK](docs/threat_model.md)
@@ -170,6 +235,6 @@ Emits:
 
 ---
 
-## 8. License
+## 10. License
 
 This project is licensed under the [MIT License](LICENSE).
