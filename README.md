@@ -476,29 +476,4 @@ $$\text{Residual Risk} = \text{Initial Risk} \times \left(1 - \frac{\text{Maturi
 
 ---
 
-## 15. Research Documentation Index
-
-Detailed peer-review documentation is provided in the `docs/` folder:
-- **[System Architecture](docs/architecture.md)**: Hardware/software interfaces, telemetry pipelines, and state schemas.
-- **[Methodology & Game Formulation](docs/methodology.md)**: Mathematical definition of the Bayesian Markov Game and reward functions.
-- **[TAFFAC Threat Model & MITRE ATT&CK](docs/threat_model.md)**: Detailed threat taxonomy and mitigation mapping.
-- **[Canonical Experiments & Ablations](docs/experiments.md)**: Full scenario descriptions, chaos injections, and hypothesis registry.
-- **[Reproducibility & Execution Protocol](docs/reproducibility.md)**: Instructions for reproducing all tables and figures.
-- **[Threats to Validity & Limitations](docs/limitations.md)**: Internal, external, and construct validity discussions.
-
----
-
-## 16. License & Citation
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
-### Citation
-If you use SecureMesh-SCE in your academic research, please cite:
-```bibtex
-@article{securemesh_sce_2026,
-  title={SecureMesh-SCE: A SCENE-Guided, AI-Assisted Security Chaos Engineering Testbed for Studying Adaptive Cyberattack and Cyberdefence in IoT Environments},
-  author={Deep, Sai and contributors},
-  year={2026},
-  journal={SecureMesh Research Technical Report}
-}
 ```
