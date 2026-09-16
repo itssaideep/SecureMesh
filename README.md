@@ -10,28 +10,6 @@
 [![LLM: Ollama & Gemini](https://img.shields.io/badge/Offensive%20LLM-Llama%203.1%20%7C%20Gemini%202.0-8A2BE2.svg)](securemesh_sce/agents/attacker/llm_policy.py)
 [![Tests: 12 Passed](https://img.shields.io/badge/Tests-12%20Passed-brightgreen.svg)](tests/)
 
----
-
-## Table of Contents
-1. [Research Overview & Theoretical Foundation](#1-research-overview--theoretical-foundation)
-2. [Complete System Architecture](#2-complete-system-architecture)
-3. [Repository Directory Structure](#3-repository-directory-structure)
-4. [Agent Hierarchies & Action Spaces](#4-agent-hierarchies--action-spaces)
-5. [Bayesian Formulation & Belief Tracking](#5-bayesian-formulation--belief-tracking)
-6. [Physical ESP8266 Hardware Honeypot](#6-physical-esp8266-hardware-honeypot)
-7. [Offensive LLM Integration (Ollama & Gemini)](#7-offensive-llm-integration-ollama--gemini)
-8. [The 8-Stage SCENE Experiment Lifecycle](#8-the-8-stage-scene-experiment-lifecycle)
-9. [Canonical Scenarios & Experimental Protocol](#9-canonical-scenarios--experimental-protocol)
-10. [Empirical Evaluation Matrix & Key Findings](#10-empirical-evaluation-matrix--key-findings)
-11. [Quick Start & Installation](#11-quick-start--installation)
-12. [Full-Stack Execution (Backend, Frontend, Docker)](#12-full-stack-execution-backend-frontend-docker)
-13. [Artifact Generation & Verification](#13-artifact-generation--verification)
-14. [TAFFAC Threat Modeling & Risk Register](#14-taffac-threat-modeling--risk-register)
-15. [Research Documentation Index](#15-research-documentation-index)
-16. [License & Citation](#16-license--citation)
-
----
-
 ## 1. Research Overview & Theoretical Foundation
 
 **SecureMesh-SCE** is an open-source, reproducible research platform engineered strictly following the **SCENE guidelines** (*Security Chaos Engineering in Networked Environments*, Jolak et al., 2026) and the **TAFFAC threat assessment framework** (*Threat Assessment Framework for Fog and Cloud*, Sood et al., 2026). It investigates the foundational research question:
