@@ -453,5 +453,20 @@ Residual risk is dynamically updated following each SCENE experiment cycle based
 $$\text{Residual Risk} = \text{Initial Risk} \times \left(1 - \frac{\text{Maturity}}{5.0} \times \text{Detection Rate}\right)$$
 
 ---
+References
+
+Jolak, R., Avula, R. R., Mohamad, M. SCENE Guidelines and Live Systematic Literature Review for Security Chaos Engineering. Journal of Systems and Software, 2026. 
+
+Sood, A. K., Zeadally, S., Hong, E.-K. TAFFAC: Threat Assessment Framework for Frontier AI Models for Cybersecurity. Computers & Electrical Engineering, 2026. 
+
+Smid, Y. E., van der Putten, P., Plaat, A. Mirror Mode in Fire Emblem: Beating Players at their Own Game with Imitation and Reinforcement Learning. Leiden University, 2025. 
+
+Zhang, Y., Goel, D., Ahmad, H. Explainable Autonomous Cyber Defense using Adversarial Multi-Agent Reinforcement Learning (C-MADF). Expert Systems with Applications, 2026.
+
+Hammar, K., Stadler, R. Finding Effective Security Strategies through Reinforcement Learning and Self-Play. IEEE/IFIP CNSM, 2020.
+
+Alavizadeh, H., Jang-Jaccard, J., Alpcan, T., Camtepe, S. A. A Markov Game Model for AI-based Cyber Security Attack Mitigation. arXiv:2107.09258, 2021.
+
+Kalka, W., Szydlo, T. μChaos: Moving Chaos Engineering to IoT Devices. ICCS 2024.
 
 ```
