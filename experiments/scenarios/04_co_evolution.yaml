@@ -1,0 +1,29 @@
+# experiments/scenarios/04_co_evolution.yaml
+# Experiment 4: Adversarial Co-Evolution (PPO Attacker vs RL Defender)
+# Investigates simultaneous two-player learning in a Markov game setting.
+# Central experiment of the thesis: both agents adapt strategies concurrently.
+
+experiment:
+  id: "SCE-004"
+  name: "Adversarial Co-Evolution (RL vs RL)"
+  target: "all"
+  attacker: "ppo"
+  defender: "rl"
+  duration: 60
+  episodes: 25
+  seed: 42
+  expected_state: "service_available"
+  tags: ["co_evolution", "ppo_vs_rl", "game_theory", "thesis_core"]
+  description: >
+    Studies simultaneous dynamic adaptation where both the AI attacker and
+    the AI defender continuously update their neural policies in response
+    to each other in a game-theoretic Markov game. Evaluates strategic
+    cycling, mutual adaptation, and steady-state system resilience.
+
+hypothesis:
+  text: >
+    The RL defender will maintain service availability above 0.70 even
+    under simultaneous adversarial co-evolution with the adaptive PPO attacker.
+  metric: "mean_service_availability"
+  threshold: 0.70
+  direction: "above"

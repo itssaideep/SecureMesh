@@ -53,7 +53,6 @@ def test_scene_engine_run(tmp_path):
     assert "experiment_id" in summary
     assert "hypothesis_result" in summary
     assert "aggregate_metrics" in summary
-    assert "risk_register" in summary
 
     # Verify generated artifact files exist
     assert (tmp_path / "SCE-T01_telemetry.jsonl").exists()

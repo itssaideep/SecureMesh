@@ -1,0 +1,27 @@
+# experiments/scenarios/03_rl_defender.yaml
+# Experiment 3: Scripted Attacker vs Adaptive RL Defender
+# Investigates whether an autonomous RL defender learns to mitigate known attack patterns while preserving service availability.
+
+experiment:
+  id: "SCE-003"
+  name: "Scripted Attacker vs RL Defender"
+  target: "all"
+  attacker: "scripted"
+  defender: "rl"
+  duration: 60
+  episodes: 20
+  seed: 42
+  expected_state: "service_available"
+  tags: ["scripted_attacker", "rl_defender", "defense_learning"]
+  description: >
+    Evaluates defensive adaptation when an RL defender using PPO learns to
+    mitigate sequential attacks from a deterministic scripted attacker.
+    Measures detection rate, service availability, and response latency.
+
+hypothesis:
+  text: >
+    The RL defender will achieve a detection rate exceeding 65%
+    while maintaining mean service availability above 0.80.
+  metric: "detection_rate"
+  threshold: 0.65
+  direction: "above"

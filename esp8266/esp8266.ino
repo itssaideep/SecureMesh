@@ -6,7 +6,6 @@
 // ====================================================================
 // Configuration: Load Wi-Fi credentials & Backend IP from secrets.h
 // ====================================================================
-<<<<<<< HEAD
 #if __has_include("secrets.h")
   #include "secrets.h"
 #else
@@ -19,14 +18,7 @@
 const char *ssid = WIFI_SSID;
 const char *password = WIFI_PASSWORD;
 const char *backend_url = BACKEND_URL;
-=======
-const char *ssid = "SSID Name "; // <-- Set your 2.4GHz Wi-Fi name
-const char *password = "password";  // <-- Set your Wi-Fi password
 
-// Your computer's IP running the FastAPI backend (e.g.,
-
-const char *backend_url = "http://<IPADDRESS>:8000/api/logs/";
->>>>>>> 04902b0334fbb84668cf859df1cb0acd74963500
 
 ESP8266WebServer server(80);
 

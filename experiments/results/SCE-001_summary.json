@@ -33,64 +33,6 @@
     "recall": 1.0,
     "f1_score": 0.9335357624831309,
     "service_availability": 1.0,
-    "brier_score": 0.014298946996010194,
     "intervention_cost": 870.0
-  },
-  "risk_register": [
-    {
-      "risk_id": "RSK-01",
-      "threat_description": "Unauthorized SSH brute-force credential stuffing",
-      "stride": "Spoofing",
-      "initial_likelihood": 4,
-      "initial_impact": 4,
-      "initial_risk": 16,
-      "control": "Rate Limiting & Honeypot Redirection",
-      "control_maturity": 3.3,
-      "residual_risk": 7.2
-    },
-    {
-      "risk_id": "RSK-02",
-      "threat_description": "Remote command injection in web gateway",
-      "stride": "Elevation of Privilege",
-      "initial_likelihood": 4,
-      "initial_impact": 5,
-      "initial_risk": 20,
-      "control": "Service Isolation & Input Sanitization",
-      "control_maturity": 2.8,
-      "residual_risk": 10.67
-    },
-    {
-      "risk_id": "RSK-03",
-      "threat_description": "IoT endpoint buffer overflow & OOM crash",
-      "stride": "Denial of Service",
-      "initial_likelihood": 5,
-      "initial_impact": 3,
-      "initial_risk": 15,
-      "control": "Firmware Verification & IoT Isolation",
-      "control_maturity": 2.3,
-      "residual_risk": 9.25
-    },
-    {
-      "risk_id": "RSK-04",
-      "threat_description": "Lateral movement via compromised mesh nodes",
-      "stride": "Elevation of Privilege",
-      "initial_likelihood": 3,
-      "initial_impact": 4,
-      "initial_risk": 12,
-      "control": "Micro-segmentation & Dynamic IP Blocking",
-      "control_maturity": 3.3,
-      "residual_risk": 5.4
-    },
-    {
-      "risk_id": "RSK-05",
-      "threat_description": "Stealthy C2 beaconing & data exfiltration",
-      "stride": "Information Disclosure",
-      "initial_likelihood": 3,
-      "initial_impact": 5,
-      "initial_risk": 15,
-      "control": "Bayesian Anomaly Tracking & IDS Tuning",
-      "control_maturity": 2.8,
-      "residual_risk": 8.0
-    }
-  ]
+  }
 }

@@ -1,0 +1,3 @@
+experiment_id,timestamp,episode_id,total_steps,attacker_type,attack_success_rate,detection_rate,precision,recall,f1_score,false_positive_rate,mttd,mttr,total_intervention_cost,action_entropy,mean_service_availability,cumulative_impact,recovery_debt
+SCE-002,1789746451.9648287,0,60,opportunistic,0.14814814814814814,0.8333333333333334,0.8333333333333334,1.0,0.9090909090909091,0.6,8.0,0.0,810.0,3.601945806133561,1.0,5.2,0.0
+SCE-002,1789746451.9882426,1,60,opportunistic,0.26,1.06,0.9464285714285714,1.0,0.9724770642201834,0.42857142857142855,7.0,0.0,840.0,3.469309872466335,1.0,9.65,0.0

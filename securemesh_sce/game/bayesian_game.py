@@ -1,14 +1,13 @@
 # securemesh_sce/game/bayesian_game.py
-"""Gymnasium-compatible Bayesian Markov game environment.
+"""Gymnasium-compatible two-player Markov Game environment.
 
 The central environment for SecureMesh-SCE. Models the interaction
-between an attacker (with hidden type θ) and a defender (maintaining
-a belief distribution over θ) as a two-player Bayesian Markov game.
+between an attacker and a defender as a two-player simultaneous-action
+Markov game — the game-theoretic formulation for the thesis.
 
 Key design decisions:
 - The attacker type θ is sampled at episode start and remains fixed.
-- The defender never directly observes θ; it must infer from behaviour.
-- The full posterior b_t(θ) is part of the defender's observation.
+- Both agents observe the network system state and choose actions simultaneously.
 - Service availability trades off with security interventions.
 - The environment supports both action-index and action-enum interfaces.
 """
@@ -37,8 +36,6 @@ from .rewards import (
     DEFENDER_ACTION_COSTS,
 )
 from .transitions import TransitionEngine, ATTACKER_LIKELIHOOD_TABLE
-from ..inference.bayesian import BayesianInference
-from ..inference.calibration import CalibrationTracker
 
 
 # =====================================================================
@@ -47,10 +44,7 @@ from ..inference.calibration import CalibrationTracker
 
 @dataclass
 class SCEScenario:
-    """Configuration for a single SCE experiment scenario.
-
-    This is a research-grade scenario definition following SCENE.
-    """
+    """Configuration for a single experiment scenario."""
     # Identity
     scenario_id: str = "SCE-001"
     name: str = "Baseline"
@@ -83,15 +77,15 @@ class SCEScenario:
 
 
 # =====================================================================
-# Bayesian Markov game environment
+# Two-player Markov Game environment
 # =====================================================================
 
 class BayesianGameEnv(gym.Env):
-    """Two-player Bayesian Markov game for Security Chaos Engineering.
+    """Two-player Markov Game for AI Cyberattack vs Cyberdefence.
 
     Observation spaces:
         - Attacker: flat system state (full observability of network)
-        - Defender: [system_state, belief, history, risk]
+        - Defender: [system_state, history, risk]
 
     Action spaces:
         - Attacker: Discrete(N_ATTACKER_ACTIONS)
@@ -114,10 +108,6 @@ class BayesianGameEnv(gym.Env):
 
         # Transition engine
         self.transition_engine = TransitionEngine(rng=self.rng)
-
-        # Bayesian inference
-        self.bayesian = BayesianInference()
-        self.calibration_tracker = CalibrationTracker()
 
         # State components
         self.attack_history = AttackHistory()
@@ -185,8 +175,6 @@ class BayesianGameEnv(gym.Env):
         self._security_stage = SecurityStage.NORMAL
 
         # Reset components
-        self.bayesian.reset()
-        self.calibration_tracker.clear()
         self.attack_history.reset()
         self.risk_state.reset()
 
@@ -256,12 +244,6 @@ class BayesianGameEnv(gym.Env):
         # --- Update network state ---
         self._apply_state_changes(atk_action, def_action, outcome)
 
-        # --- Bayesian belief update ---
-        self.bayesian.update(atk_action)
-        self.calibration_tracker.record(
-            self.bayesian.belief, self._attacker_type_idx
-        )
-
         # --- Update attack history ---
         history_features = self._extract_history_features(atk_action, outcome)
         self.attack_history.update(history_features)
@@ -297,9 +279,6 @@ class BayesianGameEnv(gym.Env):
             "service_down": outcome.service_down,
             "service_restored": outcome.service_restored,
             "impact_score": outcome.impact_score,
-            "belief": self.bayesian.belief.tolist(),
-            "belief_entropy": self.bayesian.entropy,
-            "most_likely_type": self.bayesian.most_likely_type.value,
             "security_stage": self._security_stage.name,
             "service_availability": self.risk_state.service_availability,
             "cumulative_impact": self.risk_state.cumulative_impact,
@@ -506,12 +485,11 @@ class BayesianGameEnv(gym.Env):
         return flatten_network_state(self._network_state)
 
     def _defender_observation(self) -> np.ndarray:
-        """Build defender observation: [x_t, b_t, h_t, r_t]."""
+        """Build defender observation: [x_t, h_t, r_t]."""
         x_t = flatten_network_state(self._network_state)
-        b_t = self.bayesian.belief
         h_t = self.attack_history.vector()
         r_t = self.risk_state.vector()
-        return np.concatenate([x_t, b_t, h_t, r_t])
+        return np.concatenate([x_t, h_t, r_t])
 
     # ==================================================================
     # Query methods
@@ -532,9 +510,3 @@ class BayesianGameEnv(gym.Env):
     @property
     def episode_outcomes(self) -> List[StepOutcome]:
         return self._episode_outcomes
-
-    def get_calibration_summary(self) -> Dict[str, float]:
-        return self.calibration_tracker.summary()
-
-    def get_belief_trajectory(self) -> np.ndarray:
-        return self.bayesian.belief_trajectory()

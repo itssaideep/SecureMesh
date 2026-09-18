@@ -23,17 +23,11 @@ import numpy as np
 
 from ..game.bayesian_game import BayesianGameEnv, SCEScenario
 from ..game.actions import AttackerType, N_ATTACKER_ACTIONS, N_DEFENDER_ACTIONS
-from ..agents.attacker import (
-    ScriptedAttacker, BCAttacker, GAILAttacker, PPOAttacker, LLMAttacker,
-)
-from ..agents.defender import (
-    StaticDefender, RandomForestDefender, RLDefender,
-    BayesianRLDefender, ConstrainedDefender,
-)
+from ..agents.attacker import ScriptedAttacker, PPOAttacker
+from ..agents.defender import StaticDefender, RLDefender
 from ..environment.telemetry.collector import TelemetryCollector, SteadyStateDetector
 from ..evaluation.metrics import MetricsEngine, EpisodeMetrics
 from ..evaluation.statistics import StatisticalAnalyzer, HypothesisResult
-from ..risk.risk_register import RiskRegister
 from ..logging.experiment_logger import ExperimentLogger
 
 
@@ -68,7 +62,7 @@ class ExperimentConfig:
 
 
 class SCENEExperimentEngine:
-    """Orchestrates an end-to-end SCENE experiment lifecycle."""
+    """Orchestrates an end-to-end experiment lifecycle."""
 
     def __init__(self, config: ExperimentConfig, output_dir: str = "experiments/results"):
         self.config = config
@@ -76,7 +70,6 @@ class SCENEExperimentEngine:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         self.logger = ExperimentLogger(str(self.output_dir), self.config.id)
-        self.risk_register = RiskRegister()
         self.telemetry = TelemetryCollector()
 
     def _build_agents(
@@ -88,33 +81,14 @@ class SCENEExperimentEngine:
 
         # Attacker instantiation
         atk_type = self.config.attacker_name
-        if "recon" in atk_type or "scripted" in atk_type or "phase" in atk_type or "known" in atk_type:
-            # Map scenario type to appropriate attacker type if needed
-            attacker = ScriptedAttacker(attacker_type=env.attacker_type)
-        elif "bc" in atk_type or "imitation" in atk_type:
-            attacker = BCAttacker(obs_dim=atk_obs_dim, seed=self.config.seed)
-        elif "gail" in atk_type:
-            attacker = GAILAttacker(obs_dim=atk_obs_dim, seed=self.config.seed)
-        elif "ppo" in atk_type or "adaptive" in atk_type:
+        if "ppo" in atk_type or "adaptive" in atk_type or "rl" in atk_type:
             attacker = PPOAttacker(obs_dim=atk_obs_dim, seed=self.config.seed)
-        elif "llm" in atk_type or "llama" in atk_type or "gemini" in atk_type:
-            provider = "ollama" if ("ollama" in atk_type or "llama" in atk_type) else os.environ.get("LLM_PROVIDER", "gemini")
-            model = "llama3.1:8b" if provider == "ollama" else os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
-            attacker = LLMAttacker(provider=provider, model=model, seed=self.config.seed)
         else:
             attacker = ScriptedAttacker(attacker_type=env.attacker_type)
 
         # Defender instantiation
         def_type = self.config.defender_name
-        if "static" in def_type:
-            defender = StaticDefender()
-        elif "rf" in def_type or "ml" in def_type or "random_forest" in def_type:
-            defender = RandomForestDefender(seed=self.config.seed)
-        elif "bayesian_rl" in def_type or "bayesian" in def_type:
-            defender = BayesianRLDefender(obs_dim=def_obs_dim, seed=self.config.seed)
-        elif "constrained" in def_type or "safety" in def_type:
-            defender = ConstrainedDefender(obs_dim=def_obs_dim, seed=self.config.seed)
-        elif "rl" in def_type:
+        if "rl" in def_type or "ppo" in def_type or "adaptive" in def_type:
             defender = RLDefender(obs_dim=def_obs_dim, seed=self.config.seed)
         else:
             defender = StaticDefender()
@@ -126,7 +100,7 @@ class SCENEExperimentEngine:
         event_callback: Optional[Any] = None,
         episode_callback: Optional[Any] = None,
     ) -> Dict[str, Any]:
-        """Execute full SCENE multi-episode experiment lifecycle."""
+        """Execute full multi-episode experiment lifecycle."""
         # 1. Define Hypothesis
         hyp_metric = self.config.hypothesis.get("metric", "detection_rate")
 
@@ -194,15 +168,10 @@ class SCENEExperimentEngine:
                 def_obs = next_def_obs
 
             # End of episode evaluation
-            calib = env.get_calibration_summary()
-            safety_stats = defender.get_safety_stats() if hasattr(defender, "get_safety_stats") else None
-
             ep_m = MetricsEngine.evaluate_episode(
                 episode_id=ep,
                 step_log=env.step_log,
                 outcomes=env.episode_outcomes,
-                calibration_summary=calib,
-                safety_stats=safety_stats,
             )
             episode_metrics_list.append(ep_m)
             self.logger.log_episode_summary(ep_m.to_dict())
@@ -222,13 +191,9 @@ class SCENEExperimentEngine:
             self.config.hypothesis, observed_values
         )
 
-        # 7. Compute Residual Risk & Update Risk Register
-        mean_asr = float(np.mean([m.attack_success_rate for m in episode_metrics_list]))
         mean_dr = float(np.mean([m.detection_rate for m in episode_metrics_list]))
-        for r_id in self.risk_register.entries:
-            self.risk_register.update_risk(r_id, mean_asr, mean_dr)
 
-        # 8. Export Telemetry, Metadata & Structured Summary
+        # 7. Export Telemetry, Metadata & Structured Summary
         experiment_summary = {
             "experiment_id": self.config.id,
             "name": self.config.name,
@@ -255,10 +220,8 @@ class SCENEExperimentEngine:
                 "recall": float(np.mean([m.recall for m in episode_metrics_list])),
                 "f1_score": float(np.mean([m.f1_score for m in episode_metrics_list])),
                 "service_availability": float(np.mean([m.mean_service_availability for m in episode_metrics_list])),
-                "brier_score": float(np.mean([m.brier_score for m in episode_metrics_list])),
                 "intervention_cost": float(np.mean([m.total_intervention_cost for m in episode_metrics_list])),
             },
-            "risk_register": self.risk_register.to_dict(),
         }
 
         self.logger.write_experiment_summary(experiment_summary)

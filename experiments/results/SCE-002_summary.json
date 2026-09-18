@@ -1,0 +1,38 @@
+{
+  "experiment_id": "SCE-002",
+  "name": "RL Attacker vs Static Defender",
+  "attacker": "ppo",
+  "defender": "static",
+  "episodes": 2,
+  "duration": 60,
+  "seed": 42,
+  "steady_state": {
+    "verified": true,
+    "mean_availability": 1.0,
+    "availability_std": 0.0,
+    "mean_failed_auth_rate": 0.0,
+    "samples_analyzed": 5
+  },
+  "hypothesis_result": {
+    "metric": "attack_success_rate",
+    "text": "The PPO attacker will achieve an attack success rate exceeding 40% against the static rule-based defender through policy adaptation.",
+    "threshold": 0.4,
+    "direction": "above",
+    "observed_mean": 0.2041,
+    "ci_95": [
+      -0.5065,
+      0.9147
+    ],
+    "verdict": "FAIL",
+    "passed": false
+  },
+  "aggregate_metrics": {
+    "attack_success_rate": 0.20407407407407407,
+    "detection_rate": 0.9466666666666668,
+    "precision": 0.8898809523809523,
+    "recall": 1.0,
+    "f1_score": 0.9407839866555463,
+    "service_availability": 1.0,
+    "intervention_cost": 825.0
+  }
+}

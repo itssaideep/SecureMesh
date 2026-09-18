@@ -1,12 +1,11 @@
 # securemesh_sce/evaluation/metrics.py
-"""Comprehensive evaluation metrics for SecureMesh-SCE.
+"""Evaluation metrics for Game-Theoretic Reinforcement Learning.
 
-Implements all five research metric groups:
+Core metric groups:
 1. Security Metrics (ASR, DR, Precision, Recall, F1, FPR)
 2. Response Metrics (MTTD, MTTR, Intervention Cost)
-3. Adaptation Metrics (Action diversity, trajectory similarity)
-4. Bayesian Uncertainty Metrics (Accuracy, Brier score, Log loss, ECE)
-5. Resilience & Autonomy Metrics (Service availability, Cumulative impact, Violations prevented)
+3. Adaptation Metrics (Action diversity / entropy)
+4. Resilience Metrics (Service availability, Cumulative impact)
 """
 
 from __future__ import annotations
@@ -45,21 +44,10 @@ class EpisodeMetrics:
     # 3. Adaptation
     action_entropy: float = 0.0
 
-    # 4. Bayesian
-    bayesian_accuracy: float = 0.0
-    brier_score: float = 0.0
-    log_loss: float = 0.0
-    ece: float = 0.0
-
-    # 5. Resilience
+    # 4. Resilience
     mean_service_availability: float = 1.0
     cumulative_impact: float = 0.0
     recovery_debt: float = 0.0
-
-    # 6. Autonomous Gating
-    autonomous_action_rate: float = 1.0
-    high_impact_rate: float = 0.0
-    safety_violations_prevented: int = 0
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -73,8 +61,6 @@ class MetricsEngine:
         episode_id: int,
         step_log: List[Dict[str, Any]],
         outcomes: List[StepOutcome],
-        calibration_summary: Optional[Dict[str, float]] = None,
-        safety_stats: Optional[Dict[str, Any]] = None,
     ) -> EpisodeMetrics:
         m = EpisodeMetrics(episode_id=episode_id, total_steps=len(step_log))
         if not step_log:
@@ -187,27 +173,11 @@ class MetricsEngine:
             probs = counts[counts > 0] / len(attacker_actions)
             m.action_entropy = float(-np.sum(probs * np.log2(probs)))
 
-        # 4. Bayesian
-        if calibration_summary:
-            m.bayesian_accuracy = calibration_summary.get("accuracy", 0.0)
-            m.brier_score = calibration_summary.get("brier_score", 0.0)
-            m.log_loss = calibration_summary.get("log_loss", 0.0)
-            m.ece = calibration_summary.get("ece", 0.0)
-
-        # 5. Resilience
+        # 4. Resilience
         m.mean_service_availability = float(np.mean(availabilities)) if availabilities else 1.0
         if step_log:
             last = step_log[-1]
             m.cumulative_impact = last.get("cumulative_impact", 0.0)
 
-        # 6. Autonomous gating
-        if defender_tiers:
-            n_auto = sum(1 for t in defender_tiers if t == ImpactTier.LOW)
-            n_high = sum(1 for t in defender_tiers if t in (ImpactTier.HIGH, ImpactTier.CRITICAL))
-            m.autonomous_action_rate = n_auto / len(defender_tiers)
-            m.high_impact_rate = n_high / len(defender_tiers)
-
-        if safety_stats:
-            m.safety_violations_prevented = safety_stats.get("safety_violations_prevented", 0)
-
         return m
+

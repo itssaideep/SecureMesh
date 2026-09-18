@@ -1,25 +1,23 @@
 # Experiment matrix configuration
-# Defines the full attacker × defender × scenario grid for paper-quality results.
+# 2 × 2 Attacker × Defender configuration for thesis experiments.
 
 matrix:
   attackers:
-    - scripted          # Baseline kill-chain (control group)
-    - aggressive        # Fast-cycling deterministic
-    - stealthy          # Slow, evasive deterministic
-    - recon_heavy       # Reconnaissance-focused deterministic
-    - rl                # Adaptive PPO attacker
-    - llm               # LLM-assisted attacker
+    - scripted          # Baseline deterministic kill-chain
+    - ppo               # Autonomous adaptive RL attacker
 
   defenders:
-    - static            # Rule-based (control group)
-    - ml                # Random Forest classifier
-    - rl                # Adaptive PPO with Bayesian belief
+    - static            # Baseline rule-based defender
+    - rl                # Autonomous adaptive RL defender (PPO)
 
   scenarios:
-    - known_attacks
-    - zero_day
+    - 01_baseline
+    - 02_rl_attacker
+    - 03_rl_defender
+    - 04_co_evolution
 
   seeds: [42, 123]
   episodes_per_seed: 20
-  duration: 100
+  duration: 60
   output_dir: "experiments/results/matrix"
+

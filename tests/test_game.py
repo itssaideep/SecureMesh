@@ -60,9 +60,9 @@ def test_bayesian_game_step_and_reset():
     (next_atk_obs, next_def_obs), (r_atk, r_def), term, trunc, step_info = env.step((0, 0))
     assert isinstance(r_atk, float)
     assert isinstance(r_def, float)
-    assert "belief" in step_info
-    assert len(step_info["belief"]) == 4
-    assert np.isclose(sum(step_info["belief"]), 1.0)
+    assert "attacker_action" in step_info
+    assert "defender_action" in step_info
+    assert "service_availability" in step_info
 
 
 def test_reward_penalizes_blind_shutdown():

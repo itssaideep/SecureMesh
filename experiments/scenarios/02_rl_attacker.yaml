@@ -1,0 +1,27 @@
+# experiments/scenarios/02_rl_attacker.yaml
+# Experiment 2: Adaptive RL Attacker vs Static Rule-Based Defender
+# Investigates whether an autonomous RL attacker can discover attack sequences that evade static rules.
+
+experiment:
+  id: "SCE-002"
+  name: "RL Attacker vs Static Defender"
+  target: "all"
+  attacker: "ppo"
+  defender: "static"
+  duration: 60
+  episodes: 20
+  seed: 42
+  expected_state: "service_available"
+  tags: ["rl_attacker", "static_defender", "adaptation"]
+  description: >
+    Evaluates attack effectiveness when an autonomous PPO attacker learns
+    against a static rule-based defender. Tests whether offensive AI can
+    systematically learn to exploit systems protected only by fixed policies.
+
+hypothesis:
+  text: >
+    The PPO attacker will achieve an attack success rate exceeding 40%
+    against the static rule-based defender through policy adaptation.
+  metric: "attack_success_rate"
+  threshold: 0.40
+  direction: "above"

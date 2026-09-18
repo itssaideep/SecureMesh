@@ -1,8 +1,8 @@
-# securemesh_sce — SCENE-Guided AI-Assisted Security Chaos Engineering Testbed
+# securemesh_sce — Game-Theoretic RL for AI Cyberattack & Cyberdefence
 """
-SecureMesh-SCE: A research-grade platform for studying adaptive cyberattack
-and cyberdefence in heterogeneous IoT environments using Bayesian Markov
-games, imitation/reinforcement learning, and bounded-autonomy defence.
+SecureMesh-SCE: A research prototype for studying co-evolutionary
+AI-based cyberattack and cyberdefence using game theory and
+reinforcement learning in IoT environments.
 """
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"

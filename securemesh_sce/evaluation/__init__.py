@@ -1,10 +1,9 @@
 # securemesh_sce/evaluation/__init__.py
-"""Evaluation metrics, statistical tests, and publication artifact generation."""
+"""Evaluation metrics, statistical tests, and visualisation."""
 
 from .metrics import MetricsEngine, EpisodeMetrics
 from .statistics import StatisticalAnalyzer, HypothesisResult
 from .plots import PublicationPlotter
-from .tables import PublicationTableGenerator
 
 __all__ = [
     "MetricsEngine",
@@ -12,5 +11,4 @@ __all__ = [
     "StatisticalAnalyzer",
     "HypothesisResult",
     "PublicationPlotter",
-    "PublicationTableGenerator",
 ]
