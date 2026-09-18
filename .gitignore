@@ -12,3 +12,10 @@ frontend/.eslintcache
 
 # SecureMesh / Honeypot
 SecureMesh/
+
+# ESP8266 Hardware Secrets & Build Artifacts
+esp8266/secrets.h
+**/secrets.h
+.pio/
+*.bin
+

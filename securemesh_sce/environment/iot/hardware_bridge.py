@@ -7,6 +7,7 @@ over HTTP/Serial, replacing or augmenting software simulations.
 
 from __future__ import annotations
 
+import os
 import time
 import requests
 from typing import Dict, Any, Optional
@@ -15,7 +16,9 @@ from typing import Dict, Any, Optional
 class PhysicalESP8266Bridge:
     """Bridge for querying and interacting with a physical ESP8266 honeypot device."""
 
-    def __init__(self, device_ip: str, port: int = 80, timeout: float = 2.0):
+    def __init__(self, device_ip: Optional[str] = None, port: int = 80, timeout: float = 2.0):
+        if not device_ip:
+            device_ip = os.getenv("ESP8266_DEVICE_IP", "127.0.0.1")
         self.device_ip = device_ip
         self.port = port
         self.timeout = timeout

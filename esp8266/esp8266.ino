@@ -4,14 +4,20 @@
 #include <WiFiClient.h>
 
 // ====================================================================
-// Configuration: Update with your Wi-Fi credentials and PC backend IP
+// Configuration: Load Wi-Fi credentials & Backend IP from secrets.h
 // ====================================================================
-const char *ssid = "dawg's S23 Ultra "; // <-- Set your 2.4GHz Wi-Fi name
-const char *password = "dawgmannn123";  // <-- Set your Wi-Fi password
+#if __has_include("secrets.h")
+  #include "secrets.h"
+#else
+  #warning "secrets.h not found! Using fallback placeholder credentials. Copy secrets.h.example to secrets.h."
+  #define WIFI_SSID "YOUR_2.4GHZ_WIFI_SSID"
+  #define WIFI_PASSWORD "YOUR_WIFI_PASSWORD"
+  #define BACKEND_URL "http://192.168.1.100:8000/api/logs/"
+#endif
 
-// Your computer's IP running the FastAPI backend (e.g.,
-// http://10.174.55.53:8000/api/logs/)
-const char *backend_url = "http://10.174.55.53:8000/api/logs/";
+const char *ssid = WIFI_SSID;
+const char *password = WIFI_PASSWORD;
+const char *backend_url = BACKEND_URL;
 
 ESP8266WebServer server(80);
 

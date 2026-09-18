@@ -229,11 +229,13 @@ The ESP8266 runs an asynchronous web server exposing emulated IoT endpoints:
 - `GET /status`: Live telemetry stream providing free heap bytes, Wi-Fi RSSI (dBm), and uptime (seconds).
 
 ### Flashing via PlatformIO
-1. Configure Wi-Fi credentials in `esp8266/esp8266.ino`:
+1. Configure your network credentials securely in `esp8266/secrets.h` (or copy from `esp8266/secrets.h.example`):
    ```cpp
-   const char* ssid     = "Your_2.4GHz_SSID";
-   const char* password = "Your_Password";
+   #define WIFI_SSID "Your_2.4GHz_SSID"
+   #define WIFI_PASSWORD "Your_Password"
+   #define BACKEND_URL "http://192.168.1.100:8000/api/logs/"
    ```
+   *(Note: `secrets.h` is git-ignored so your Wi-Fi credentials are never committed).*
 2. Build and flash the firmware:
    ```powershell
    # Flash over USB serial (COM6 or auto-detected port)
