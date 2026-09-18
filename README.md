@@ -46,7 +46,9 @@ This project investigates four core research questions:
 
 The interaction is formalized as a **two-player simultaneous-action Markov Game**:
 
-$$\mathcal{M} = \langle \mathcal{S}, \mathcal{A}_{\text{atk}}, \mathcal{A}_{\text{def}}, \mathcal{P}, \mathcal{R}_{\text{atk}}, \mathcal{R}_{\text{def}}, \gamma \rangle$$
+```text
+M = ⟨ S, A_atk, A_def, P, R_atk, R_def, γ ⟩
+```
 
 ```
                            Simultaneous Markov Game
@@ -72,29 +74,39 @@ $$\mathcal{M} = \langle \mathcal{S}, \mathcal{A}_{\text{atk}}, \mathcal{A}_{\tex
 ```
 
 ### State Space Representation
-At time step $t$, the system state $s_t$ observed by the agents consists of:
-$$s_t = [x_t, h_t, r_t]$$
-- $x_t \in \mathbb{R}^{d_x}$: **Network State Vector** representing host isolation flags, compromised service status, active connection counts, port vulnerabilities, and IoT device firmware integrity.
-- $h_t \in \mathbb{R}^{d_h}$: **Attack History Vector** capturing sliding-window frequencies of reconnaissance scans, authentication failures, exploit attempts, and lateral movement.
-- $r_t \in \mathbb{R}^{d_r}$: **Risk & Resilience Vector** tracking cumulative service impact, current service availability $\in [0, 1]$, and active security escalation stage (`NORMAL`, `SUSPICIOUS`, `CONFIRMED`, `RECOVER`).
+At time step `t`, the system state `s_t` observed by the agents consists of:
+
+```text
+s_t = [ x_t,  h_t,  r_t ]
+```
+
+- **Network State Vector (`x_t`):** Host isolation flags, compromised service states, active connection counts, port vulnerabilities, and IoT device firmware integrity.
+- **Attack History Vector (`h_t`):** Sliding-window frequencies of reconnaissance scans, authentication failures, exploit attempts, and lateral movement.
+- **Risk & Resilience Vector (`r_t`):** Cumulative service impact, current service availability (0.0 to 1.0), and active security escalation stage (`NORMAL`, `SUSPICIOUS`, `CONFIRMED`, `RECOVER`).
 
 ### Multi-Objective Reward Functions
 
-#### Attacker Reward:
-$$R_{\text{atk}} = w_{\text{comp}} \cdot \mathbb{I}(\text{compromise}) - w_{\text{det}} \cdot \mathbb{I}(\text{detected}) - c(a_{\text{atk}})$$
-- Rewards gaining unauthorized control over services and IoT nodes.
-- Penalizes triggering defensive intrusion detection and action execution overhead.
+#### Attacker Reward Function:
+```text
+R_atk = (w_comp × 𝟙_compromise) - (w_det × 𝟙_detected) - cost(a_atk)
+```
+- **Rewards:** Gaining unauthorized control over services and IoT nodes (`+w_comp`).
+- **Penalties:** Triggering defensive intrusion alarms (`-w_det`) and action execution overhead (`-cost`).
 
-#### Defender Reward:
-$$R_{\text{def}} = w_{\text{det}} \cdot \mathbb{I}(\text{correct\_detection}) + w_{\text{avail}} \cdot \text{Availability} - w_{\text{fp}} \cdot \mathbb{I}(\text{false\_alarm}) - w_{\text{dos}} \cdot \mathbb{I}(\text{unnecessary\_shutdown}) - c(a_{\text{def}})$$
-- Rewards timely detection and successful attack neutralisation.
-- Enforces an availability penalty to discourage blind shutdowns (e.g. taking the entire network offline when only low-level probing occurred).
+#### Defender Reward Function:
+```text
+R_def = (w_det × 𝟙_correct_detection) + (w_avail × Availability) 
+        - (w_fp × 𝟙_false_alarm) - (w_dos × 𝟙_unnecessary_shutdown) - cost(a_def)
+```
+- **Rewards:** Timely detection (`+w_det`) and maintaining service availability (`+w_avail × Availability`).
+- **Penalties:** False alarms (`-w_fp`), action execution overhead (`-cost`), and unnecessary shutdowns / self-inflicted Denial of Service (`-w_dos`).
+
 
 ---
 
 ## 3. Agent Architectures
 
-The testbed features two attacker strategies and two defender strategies, enabling a $2 \times 2$ comparative evaluation:
+The testbed features two attacker strategies and two defender strategies, enabling a 2 × 2 comparative evaluation:
 
 ```
                             Offense vs Defence Matrix
@@ -126,7 +138,7 @@ The testbed features two attacker strategies and two defender strategies, enabli
    - Represents traditional signature/heuristic intrusion response systems.
 2. **`RLDefender` (Level 2 Adaptive AI):**
    - Implements PPO actor-critic network trained to optimize multi-objective security resilience.
-   - State input: Concatenated state vector $[x_t, h_t, r_t]$.
+   - State input: Concatenated state vector `[x_t, h_t, r_t]`.
    - Action output: Probability distribution over 14 tiered defender actions.
    - Learns proportional response: balances intrusion containment against service availability.
 
@@ -176,19 +188,19 @@ The testbed features two attacker strategies and two defender strategies, enabli
 Experiments automatically record step-level and episode-level metrics:
 
 ### 1. Security Containment
-- **Attack Success Rate (ASR):** $\frac{\text{Successful Attacks}}{\text{Total Attack Actions}}$. Measures attacker exploit efficacy.
-- **Detection Rate (DR):** $\frac{\text{True Positives}}{\text{Total Attack Actions}}$. Measures defender IDS coverage.
-- **Precision, Recall, F1-Score, False Positive Rate (FPR):** Classification performance of defender alerts.
+- **Attack Success Rate (ASR):** `ASR = Successful Attacks / Total Attack Actions`. Measures attacker exploit efficacy.
+- **Detection Rate (DR):** `DR = True Positives / Total Attack Actions`. Measures defender IDS coverage.
+- **Precision, Recall, F1-Score, False Positive Rate (FPR):** Standard classification performance of defensive alerts.
 
 ### 2. Operational Resilience
-- **Mean Service Availability:** $\frac{1}{T} \sum_{t=1}^{T} \text{Availability}_t \in [0, 1]$. Measures uptime of critical services during attack campaigns.
+- **Mean Service Availability:** `Availability = (1 / T) × ∑ Availability_t` (ranging from 0.0 to 1.0). Measures average uptime of critical services during attack campaigns.
 - **Mean Time to Detect (MTTD):** Elapsed steps between first attacker intrusion attempt and first true positive detection.
-- **Mean Time to Respond (MTTR):** Elapsed steps between detection and decisive mitigation action (Tier 2 or 3).
-- **Cumulative Impact Score:** Aggregated damage incurred across hosts and IoT nodes.
+- **Mean Time to Respond (MTTR):** Elapsed steps between detection and decisive mitigation action (Tier 2 or Tier 3).
+- **Cumulative Impact Score:** Aggregated damage score incurred across hosts and IoT nodes.
 
 ### 3. Adaptation Dynamics
-- **Action Entropy:** $H(A) = -\sum_{a} P(a) \log_2 P(a)$. Quantifies policy diversity and stealth unpredictability.
-- **Statistical Hypothesis Evaluation:** Automatic computation of empirical mean, 95% Bootstrap Confidence Intervals, and two-sample Mann-Whitney U tests against configured research thresholds.
+- **Action Entropy:** `H(A) = -∑ P(a) × log2(P(a))`. Quantifies policy diversity and stealth unpredictability.
+- **Statistical Hypothesis Evaluation:** Automatic computation of empirical mean, 95% Bootstrap Confidence Intervals (CI), and two-sample Mann-Whitney U tests against configured research thresholds.
 
 ---
 
@@ -224,7 +236,8 @@ experiments/scenarios/
 #### Scenario 4: `04_co_evolution.yaml` (Central Thesis Experiment)
 - **Attacker:** `PPOAttacker` | **Defender:** `RLDefender`
 - **Objective:** Investigates simultaneous dynamic co-evolution where both agents update policies concurrently.
-- **Hypothesis:** The RL defender will preserve system resilience (availability $\ge 70\%$) even under continuous adversarial learning from the PPO attacker.
+- **Hypothesis:** The RL defender will preserve system resilience (availability ≥ 70%) even under continuous adversarial learning from the PPO attacker.
+
 
 ---
 
