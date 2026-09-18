@@ -6,12 +6,12 @@
 // ====================================================================
 // Configuration: Update with your Wi-Fi credentials and PC backend IP
 // ====================================================================
-const char *ssid = "dawg's S23 Ultra "; // <-- Set your 2.4GHz Wi-Fi name
-const char *password = "dawgmannn123";  // <-- Set your Wi-Fi password
+const char *ssid = "SSID Name "; // <-- Set your 2.4GHz Wi-Fi name
+const char *password = "password";  // <-- Set your Wi-Fi password
 
 // Your computer's IP running the FastAPI backend (e.g.,
-// http://10.174.55.53:8000/api/logs/)
-const char *backend_url = "http://10.174.55.53:8000/api/logs/";
+
+const char *backend_url = "http://<IPADDRESS>:8000/api/logs/";
 
 ESP8266WebServer server(80);
 
