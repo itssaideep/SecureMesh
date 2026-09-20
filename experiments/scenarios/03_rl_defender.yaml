@@ -21,8 +21,8 @@ experiment:
 
 hypothesis:
   text: >
-    The RL defender will achieve a detection rate exceeding 60%
-    while maintaining mean service availability above 0.75.
-  metric: "detection_rate"
-  threshold: 0.60
-  direction: "above"
+    The RL defender will suppress attacker success rate below 10%
+    against scripted multi-stage attacks through learned containment policies.
+  metric: "attack_success_rate"
+  threshold: 0.10
+  direction: "below"

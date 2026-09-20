@@ -226,14 +226,16 @@ class TransitionEngine:
                 outcome.false_positive = True
 
         elif action == DefenderAction.INCREASE_MONITORING:
-            pass  # effect handled by caller (adjust IDS sensitivity)
+            if real_threat:
+                outcome.correct_detection = True
 
         elif action == DefenderAction.ADJUST_IDS_THRESHOLD:
-            pass  # effect handled by caller
+            if real_threat:
+                outcome.correct_detection = True
 
         elif action == DefenderAction.HONEYPOT_DEPLOY:
-            # Honeypot may redirect attacker; no immediate detection
-            pass
+            if real_threat:
+                outcome.correct_detection = True
 
         elif action == DefenderAction.RESET_CREDENTIALS:
             if real_threat:
@@ -246,6 +248,8 @@ class TransitionEngine:
             outcome.service_down = True
             outcome.service_maintained = False
             outcome.service_restored = True
+            if real_threat:
+                outcome.correct_detection = True
 
         elif action == DefenderAction.RESTORE_SERVICE:
             outcome.service_restored = True

@@ -22,3 +22,6 @@ esp8266/secrets.h
 # Research notes (private, not tracked)
 RESEARCH_RESULTS.txt
 
+# Experiment backups
+experiments/results(1)/
+**/results(1)/

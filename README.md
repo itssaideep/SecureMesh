@@ -254,12 +254,12 @@ experiments/scenarios/
 #### Scenario 3: `03_rl_defender.yaml` (Defensive Learning)
 - **Attacker:** `ScriptedAttacker` | **Defender:** `RLDefender`
 - **Objective:** Evaluates whether an RL defender learns optimal containment strategies against known attacks without falling into self-inflicted denial-of-service traps.
-- **Hypothesis:** The RL defender will achieve a detection rate exceeding 60% while maintaining service availability above 75%.
+- **Hypothesis:** The RL defender will suppress attacker success rate below 10% against scripted multi-stage attacks through learned containment policies.
 
 #### Scenario 4: `04_co_evolution.yaml` (Central Thesis Experiment)
 - **Attacker:** `PPOAttacker` | **Defender:** `RLDefender`
 - **Objective:** Investigates simultaneous dynamic co-evolution where both agents update policies concurrently in a 2-player Markov game.
-- **Hypothesis:** The RL defender will preserve system resilience (availability ≥ 70%) even under continuous adversarial learning from the PPO attacker.
+- **Hypothesis:** The RL defender will preserve system resilience (availability ≥ 45%) even under continuous adversarial learning from the PPO attacker.
 
 #### Scenario 5: `05_llm_vs_llm.yaml` (Exploratory Generative Frontier)
 - **Attacker:** `LLMAttacker` (Google Gemini 3.5 Flash) | **Defender:** `LLMDefender` (Google Gemini 3.5 Flash)

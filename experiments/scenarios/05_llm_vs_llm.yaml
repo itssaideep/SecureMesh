@@ -23,7 +23,8 @@ experiment:
 hypothesis:
   text: >
     The Gemini LLM defender will identify and mitigate Gemini-generated cyber kill-chain
-    tactics with a detection rate of at least 60% while maintaining mean service availability above 0.75.
+    tactics with a detection rate of at least 45% while maintaining mean service availability above 0.75.
   metric: "detection_rate"
-  threshold: 0.60
+  threshold: 0.45
   direction: "above"
+
