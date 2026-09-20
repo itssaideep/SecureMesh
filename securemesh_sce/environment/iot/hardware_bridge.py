@@ -26,7 +26,7 @@ class PhysicalESP8266Bridge:
 
     def is_reachable(self) -> bool:
         """Check if the physical device is online on the local network."""
-        for _ in range(2):
+        for _ in range(30):
             try:
                 r = requests.get(f"{self.base_url}/status", timeout=self.timeout)
                 if r.status_code == 200:
