@@ -3,7 +3,7 @@
   "name": "RL Attacker vs Static Defender",
   "attacker": "ppo",
   "defender": "static",
-  "episodes": 15,
+  "episodes": 20,
   "duration": 60,
   "seed": 42,
   "steady_state": {
@@ -18,21 +18,21 @@
     "text": "The PPO attacker will achieve an attack success rate exceeding 18% against the static rule-based defender through policy adaptation.",
     "threshold": 0.18,
     "direction": "above",
-    "observed_mean": 0.1873,
+    "observed_mean": 0.2193,
     "ci_95": [
-      0.1281,
-      0.2466
+      0.1633,
+      0.2752
     ],
     "verdict": "PASS",
     "passed": true
   },
   "aggregate_metrics": {
-    "attack_success_rate": 0.18734009783417407,
-    "detection_rate": 0.735938898356603,
-    "precision": 0.735065905504502,
-    "recall": 0.9988888888888889,
-    "f1_score": 0.8098628330521233,
+    "attack_success_rate": 0.21926440595605884,
+    "detection_rate": 0.7650142238048778,
+    "precision": 0.7684484439067015,
+    "recall": 0.9991666666666668,
+    "f1_score": 0.8363552470937586,
     "service_availability": 1.0,
-    "intervention_cost": 834.0
+    "intervention_cost": 837.75
   }
 }
