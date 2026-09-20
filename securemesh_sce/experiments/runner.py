@@ -36,7 +36,7 @@ def run_experiment(
         cfg.duration = duration
     if seed is not None:
         cfg.seed = seed
-    cfg.use_physical_hardware = True
+    cfg.use_physical_hardware = hardware
     if hardware_ip:
         cfg.hardware_ip = hardware_ip
     elif os.getenv("ESP8266_DEVICE_IP"):

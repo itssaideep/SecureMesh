@@ -23,9 +23,9 @@ from typing import Dict
 class DefenderRewardWeights:
     """Tunable weights for the multi-objective defender reward."""
     w_security: float = 1.0
-    w_availability: float = 1.5
+    w_availability: float = 5.0
     w_recovery: float = 0.3
-    w_defence_cost: float = 0.2
+    w_defence_cost: float = 1.0
     w_unnecessary_intervention: float = 1.5
 
 
@@ -200,6 +200,6 @@ DEFENDER_ACTION_COSTS: Dict[DefenderAction, float] = {
     DefenderAction.ISOLATE_IOT:          20.0,
     DefenderAction.PATCH_SERVICE:        12.0,
     DefenderAction.RESTORE_SERVICE:      8.0,
-    DefenderAction.NETWORK_SHUTDOWN:     50.0,
+    DefenderAction.NETWORK_SHUTDOWN:     100.0,
     DefenderAction.NOOP:                 0.0,
 }
