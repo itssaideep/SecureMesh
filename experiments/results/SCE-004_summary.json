@@ -3,7 +3,7 @@
   "name": "Adversarial Co-Evolution (RL vs RL)",
   "attacker": "ppo",
   "defender": "rl",
-  "episodes": 15,
+  "episodes": 20,
   "duration": 60,
   "seed": 42,
   "steady_state": {
@@ -18,21 +18,21 @@
     "text": "The RL defender will maintain service availability above 0.45 even under simultaneous adversarial co-evolution with the adaptive PPO attacker.",
     "threshold": 0.45,
     "direction": "above",
-    "observed_mean": 0.4731,
+    "observed_mean": 0.5135,
     "ci_95": [
-      0.3162,
-      0.6299
+      0.378,
+      0.6491
     ],
     "verdict": "PASS",
     "passed": true
   },
   "aggregate_metrics": {
-    "attack_success_rate": 0.06716740712095845,
-    "detection_rate": 0.24014732170235695,
-    "precision": 0.5305222087853666,
-    "recall": 0.9952380952380953,
-    "f1_score": 0.6553029267063963,
-    "service_availability": 0.4730555555555556,
-    "intervention_cost": 678.2666666666667
+    "attack_success_rate": 0.07427968698378432,
+    "detection_rate": 0.29734134486389957,
+    "precision": 0.5892057793568489,
+    "recall": 1.0,
+    "f1_score": 0.7062193023785969,
+    "service_availability": 0.5135416666666667,
+    "intervention_cost": 775.8
   }
 }
