@@ -8,30 +8,12 @@
 [![Gymnasium](https://img.shields.io/badge/Gymnasium-0.29%2B-green.svg)](https://gymnasium.farama.org/)
 [![LLM: Gemini 3.5 Flash](https://img.shields.io/badge/LLM-Gemini%203.5%20Flash-orange.svg)](experiments/scenarios/05_llm_vs_llm.yaml)
 [![Hardware: ESP8266](https://img.shields.io/badge/Hardware-NodeMCU%20ESP8266-red.svg)](esp8266/)
-[![Tests: 10 Passed](https://img.shields.io/badge/Tests-10%20Passed-brightgreen.svg)](tests/)
+
 
 ---
 
-## Table of Contents
-
-1. [Thesis Motivation & Research Questions](#1-thesis-motivation--research-questions)
-2. [Game-Theoretic Formulation](#2-game-theoretic-formulation)
-3. [Agent Architectures](#3-agent-architectures)
-4. [Action Spaces & Impact Tiers](#4-action-spaces--impact-tiers)
-5. [Evaluation Metrics & Statistical Analysis](#5-evaluation-metrics--statistical-analysis)
-6. [Experimental Scenarios](#6-experimental-scenarios)
-7. [Target Environment & Physical Honeypot](#7-target-environment--physical-honeypot)
-8. [Repository Architecture](#8-repository-architecture)
-9. [Installation & Quick Start](#9-installation--quick-start)
-10. [REST & WebSocket API Reference](#10-rest--websocket-api-reference)
-11. [License & Citation](#11-license--citation)
-
----
-
-## 1. Thesis Motivation & Research Questions
-
-Recent advances in artificial intelligence have significantly expanded the cyber threat surface. **Offensive AI** — adversaries empowered by reinforcement learning and autonomous decision logic — can dynamically probe target systems, evade static signature-based detection rules, and exploit interconnected services. In response, defensive systems must not only detect anomalous traffic but also learn when and how to intervene without causing self-inflicted service downtime (over-aggressive containment).
-
+1. Research Questions:
+   
 This project investigates five core research questions across game-theoretic reinforcement learning and generative AI:
 
 | Research Question | Scientific Objective | Target Scenario | Primary Metrics |
