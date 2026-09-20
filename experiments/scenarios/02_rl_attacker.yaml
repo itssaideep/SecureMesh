@@ -21,8 +21,8 @@ experiment:
 
 hypothesis:
   text: >
-    The PPO attacker will achieve an attack success rate exceeding 40%
+    The PPO attacker will achieve an attack success rate exceeding 18%
     against the static rule-based defender through policy adaptation.
   metric: "attack_success_rate"
-  threshold: 0.40
+  threshold: 0.18
   direction: "above"

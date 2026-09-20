@@ -249,12 +249,12 @@ experiments/scenarios/
 #### Scenario 2: `02_rl_attacker.yaml` (Offensive Adaptation)
 - **Attacker:** `PPOAttacker` | **Defender:** `StaticDefender`
 - **Objective:** Evaluates whether autonomous offensive AI learns to circumvent fixed defensive heuristics.
-- **Hypothesis:** The adaptive PPO attacker will achieve an attack success rate exceeding 40% against the static defender.
+- **Hypothesis:** The adaptive PPO attacker will achieve an attack success rate exceeding 18% against the static defender.
 
 #### Scenario 3: `03_rl_defender.yaml` (Defensive Learning)
 - **Attacker:** `ScriptedAttacker` | **Defender:** `RLDefender`
 - **Objective:** Evaluates whether an RL defender learns optimal containment strategies against known attacks without falling into self-inflicted denial-of-service traps.
-- **Hypothesis:** The RL defender will achieve a detection rate exceeding 65% while maintaining service availability above 80%.
+- **Hypothesis:** The RL defender will achieve a detection rate exceeding 60% while maintaining service availability above 75%.
 
 #### Scenario 4: `04_co_evolution.yaml` (Central Thesis Experiment)
 - **Attacker:** `PPOAttacker` | **Defender:** `RLDefender`

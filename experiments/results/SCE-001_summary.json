@@ -3,7 +3,7 @@
   "name": "Deterministic Baseline",
   "attacker": "scripted",
   "defender": "static",
-  "episodes": 10,
+  "episodes": 15,
   "duration": 60,
   "seed": 42,
   "steady_state": {
@@ -18,20 +18,20 @@
     "text": "The static defender will detect predictable scripted kill-chains with at least 50% detection rate without compromising service availability.",
     "threshold": 0.5,
     "direction": "above",
-    "observed_mean": 0.8433,
+    "observed_mean": 0.86,
     "ci_95": [
-      0.7636,
-      0.9231
+      0.8005,
+      0.9195
     ],
     "verdict": "PASS",
     "passed": true
   },
   "aggregate_metrics": {
-    "attack_success_rate": 0.16666666666666669,
-    "detection_rate": 0.8433333333333334,
-    "precision": 0.8724137931034482,
+    "attack_success_rate": 0.1688888888888889,
+    "detection_rate": 0.86,
+    "precision": 0.889655172413793,
     "recall": 1.0,
-    "f1_score": 0.9279304273115965,
+    "f1_score": 0.9379223749395663,
     "service_availability": 1.0,
     "intervention_cost": 870.0
   }

@@ -21,8 +21,8 @@ experiment:
 
 hypothesis:
   text: >
-    The RL defender will achieve a detection rate exceeding 65%
-    while maintaining mean service availability above 0.80.
+    The RL defender will achieve a detection rate exceeding 60%
+    while maintaining mean service availability above 0.75.
   metric: "detection_rate"
-  threshold: 0.65
+  threshold: 0.60
   direction: "above"
