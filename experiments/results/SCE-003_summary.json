@@ -3,7 +3,7 @@
   "name": "Scripted Attacker vs RL Defender",
   "attacker": "scripted",
   "defender": "rl",
-  "episodes": 5,
+  "episodes": 20,
   "duration": 60,
   "seed": 42,
   "steady_state": {
@@ -18,21 +18,21 @@
     "text": "The RL defender will suppress attacker success rate below 10% against scripted multi-stage attacks through learned containment policies.",
     "threshold": 0.1,
     "direction": "below",
-    "observed_mean": 0.0333,
+    "observed_mean": 0.0983,
     "ci_95": [
-      0.0006,
-      0.0661
+      0.067,
+      0.1296
     ],
     "verdict": "PASS",
     "passed": true
   },
   "aggregate_metrics": {
-    "attack_success_rate": 0.03333333333333334,
-    "detection_rate": 0.18666666666666668,
-    "precision": 0.5244593301435406,
-    "recall": 1.0,
-    "f1_score": 0.6694761657908492,
-    "service_availability": 0.12625000000000003,
-    "intervention_cost": 1439.0
+    "attack_success_rate": 0.09833333333333333,
+    "detection_rate": 0.2866666666666666,
+    "precision": 0.6758968205651559,
+    "recall": 0.9521601086606891,
+    "f1_score": 0.7686965444013495,
+    "service_availability": 0.5337500000000001,
+    "intervention_cost": 816.85
   }
 }
