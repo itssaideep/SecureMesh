@@ -39,7 +39,7 @@ class PhysicalESP8266Bridge:
     def get_hardware_telemetry(self) -> Optional[Dict[str, Any]]:
         """Fetch live free heap, RSSI, and uptime directly from physical hardware."""
         try:
-            time.sleep(0.05)
+            time.sleep(0.2)
             r = requests.get(f"{self.base_url}/status", timeout=self.timeout)
             if r.status_code == 200:
                 data = r.json()
@@ -53,7 +53,7 @@ class PhysicalESP8266Bridge:
     def test_honeypot_login(self, username: str = "admin", password: str = "123456") -> Dict[str, Any]:
         """Simulate an authentication attack probe against the physical device."""
         try:
-            time.sleep(0.05)
+            time.sleep(0.2)
             r = requests.post(
                 f"{self.base_url}/login",
                 data={"username": username, "password": password},
