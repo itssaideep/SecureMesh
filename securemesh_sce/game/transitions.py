@@ -173,6 +173,7 @@ class TransitionEngine:
         """
         outcome = attacker_outcome  # modify in-place
         real_threat = outcome.attack_success or outcome.attacker_detected or self._has_compromised_service(network_state)
+        real_compromise = outcome.attack_success or self._has_compromised_service(network_state)
 
         # Set defence cost
         outcome.defence_action_cost = DEFENDER_ACTION_COSTS.get(action, 0.0)
@@ -202,15 +203,19 @@ class TransitionEngine:
             elif not real_threat:
                 outcome.false_positive = True
                 outcome.intervention_unnecessary = True
+            else:
+                outcome.intervention_unnecessary = True
 
         elif action == DefenderAction.ISOLATE_IOT:
             outcome.service_down = True
             outcome.service_maintained = False
-            if real_threat:
+            if real_compromise:
                 outcome.correct_detection = True
                 outcome.attacker_isolated_by_defender = True
-            else:
+            elif not real_threat:
                 outcome.false_positive = True
+                outcome.intervention_unnecessary = True
+            else:
                 outcome.intervention_unnecessary = True
 
         elif action == DefenderAction.TERMINATE_SESSION:
@@ -248,7 +253,7 @@ class TransitionEngine:
         elif action == DefenderAction.NETWORK_SHUTDOWN:
             outcome.service_down = True
             outcome.service_maintained = False
-            if real_threat:
+            if real_compromise:
                 outcome.correct_detection = True
                 outcome.attacker_isolated_by_defender = True
                 outcome.attacker_blocked = True

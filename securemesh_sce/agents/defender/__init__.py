@@ -8,8 +8,11 @@ Defenders:
 
 from .static import StaticDefender
 from .rl import RLDefender
+from .llm import LLMDefender
 
 __all__ = [
     "StaticDefender",
     "RLDefender",
+    "LLMDefender",
 ]
+

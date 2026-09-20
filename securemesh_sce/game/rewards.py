@@ -23,10 +23,10 @@ from typing import Dict
 class DefenderRewardWeights:
     """Tunable weights for the multi-objective defender reward."""
     w_security: float = 1.0
-    w_availability: float = 0.8
+    w_availability: float = 1.5
     w_recovery: float = 0.3
     w_defence_cost: float = 0.2
-    w_unnecessary_intervention: float = 0.5
+    w_unnecessary_intervention: float = 1.5
 
 
 @dataclass
@@ -69,8 +69,9 @@ class StepOutcome:
     defence_action_cost: float = 0.0    # action-specific cost
     intervention_unnecessary: bool = False
 
-    # Impact
-    impact_score: float = 0.0   # severity-weighted (0..1)
+    # Impact & Availability
+    impact_score: float = 0.0           # severity-weighted (0..1)
+    service_availability: float = 1.0   # current network availability ratio (0..1)
 
 
 # =====================================================================
@@ -157,6 +158,8 @@ def defender_reward(outcome: StepOutcome,
         availability += 10.0
     if outcome.service_down:
         availability -= 60.0
+    # Continuous availability penalty: penalises remaining in a degraded state every step
+    availability += (outcome.service_availability - 1.0) * 50.0
     reward += w.w_availability * availability
 
     # --- Recovery component ---

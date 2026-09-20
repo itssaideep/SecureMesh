@@ -23,12 +23,16 @@ import numpy as np
 
 from ..game.bayesian_game import BayesianGameEnv, SCEScenario
 from ..game.actions import AttackerType, N_ATTACKER_ACTIONS, N_DEFENDER_ACTIONS
-from ..agents.attacker import ScriptedAttacker, PPOAttacker
-from ..agents.defender import StaticDefender, RLDefender
+from ..agents.attacker import ScriptedAttacker, PPOAttacker, LLMAttacker
+from ..agents.defender import StaticDefender, RLDefender, LLMDefender
 from ..environment.telemetry.collector import TelemetryCollector, SteadyStateDetector
 from ..evaluation.metrics import MetricsEngine, EpisodeMetrics
 from ..evaluation.statistics import StatisticalAnalyzer, HypothesisResult
 from ..logging.experiment_logger import ExperimentLogger
+
+
+from dotenv import load_dotenv
+load_dotenv()
 
 
 @dataclass
@@ -40,6 +44,8 @@ class ExperimentConfig:
     duration: int = 100
     episodes: int = 10
     seed: int = 42
+    use_physical_hardware: bool = True
+    hardware_ip: Optional[str] = None
     hypothesis: Dict[str, Any] = field(default_factory=dict)
     raw_yaml: Dict[str, Any] = field(default_factory=dict)
 
@@ -56,6 +62,8 @@ class ExperimentConfig:
             duration=int(exp_data.get("duration", 100)),
             episodes=int(exp_data.get("episodes", 10)),
             seed=int(exp_data.get("seed", 42)),
+            use_physical_hardware=bool(exp_data.get("use_physical_hardware", True)),
+            hardware_ip=exp_data.get("hardware_ip", None),
             hypothesis=data.get("hypothesis", {}),
             raw_yaml=data,
         )
@@ -81,14 +89,18 @@ class SCENEExperimentEngine:
 
         # Attacker instantiation
         atk_type = self.config.attacker_name
-        if "ppo" in atk_type or "adaptive" in atk_type or "rl" in atk_type:
+        if "llm" in atk_type or "generative" in atk_type or "gemini" in atk_type or "llama" in atk_type:
+            attacker = LLMAttacker(seed=self.config.seed)
+        elif "ppo" in atk_type or "adaptive" in atk_type or "rl" in atk_type:
             attacker = PPOAttacker(obs_dim=atk_obs_dim, seed=self.config.seed)
         else:
             attacker = ScriptedAttacker(attacker_type=env.attacker_type)
 
         # Defender instantiation
         def_type = self.config.defender_name
-        if "rl" in def_type or "ppo" in def_type or "adaptive" in def_type:
+        if "llm" in def_type or "generative" in def_type or "gemini" in def_type:
+            defender = LLMDefender(seed=self.config.seed)
+        elif "rl" in def_type or "ppo" in def_type or "adaptive" in def_type:
             defender = RLDefender(obs_dim=def_obs_dim, seed=self.config.seed)
         else:
             defender = StaticDefender()
@@ -109,6 +121,8 @@ class SCENEExperimentEngine:
             name=self.config.name,
             duration=self.config.duration,
             seed=self.config.seed,
+            use_physical_hardware=self.config.use_physical_hardware,
+            hardware_ip=self.config.hardware_ip,
         )
         env = BayesianGameEnv(scenario=scenario)
 

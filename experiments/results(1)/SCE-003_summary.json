@@ -1,0 +1,38 @@
+{
+  "experiment_id": "SCE-003",
+  "name": "Scripted Attacker vs RL Defender",
+  "attacker": "scripted",
+  "defender": "rl",
+  "episodes": 5,
+  "duration": 60,
+  "seed": 42,
+  "steady_state": {
+    "verified": true,
+    "mean_availability": 1.0,
+    "availability_std": 0.0,
+    "mean_failed_auth_rate": 0.0,
+    "samples_analyzed": 5
+  },
+  "hypothesis_result": {
+    "metric": "detection_rate",
+    "text": "The RL defender will achieve a detection rate exceeding 65% while maintaining mean service availability above 0.80.",
+    "threshold": 0.65,
+    "direction": "above",
+    "observed_mean": 0.1367,
+    "ci_95": [
+      0.0472,
+      0.2262
+    ],
+    "verdict": "FAIL",
+    "passed": false
+  },
+  "aggregate_metrics": {
+    "attack_success_rate": 0.023333333333333334,
+    "detection_rate": 0.13666666666666666,
+    "precision": 0.4110869565217391,
+    "recall": 1.0,
+    "f1_score": 0.5564969651926173,
+    "service_availability": 0.12541666666666665,
+    "intervention_cost": 702.0
+  }
+}

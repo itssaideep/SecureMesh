@@ -11,6 +11,7 @@ experiment:
   duration: 60
   episodes: 20
   seed: 42
+  use_physical_hardware: true
   expected_state: "service_available"
   tags: ["rl_attacker", "static_defender", "adaptation"]
   description: >

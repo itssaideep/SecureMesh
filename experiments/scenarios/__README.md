@@ -5,4 +5,6 @@ Repeatable game-theoretic RL experiments:
 - `02_rl_attacker.yaml`: PPO Attacker vs Static Defender (Offensive AI adaptation)
 - `03_rl_defender.yaml`: Scripted Attacker vs RL Defender (Defensive AI adaptation)
 - `04_co_evolution.yaml`: PPO Attacker vs RL Defender (Simultaneous adversarial co-evolution)
+- `05_llm_vs_llm.yaml`: LLM Attacker vs LLM Defender (Generative Red vs Blue Team via Gemini 3.5 Flash)
+
 

@@ -1,0 +1,29 @@
+# experiments/scenarios/05_llm_vs_llm.yaml
+# Experiment 5: Autonomous LLM Attacker vs Autonomous LLM Defender
+# Pits Generative Red-Team Agent against Generative Blue-Team SOC Agent (Google Gemini 3.5 Flash).
+
+experiment:
+  id: "SCE-005"
+  name: "LLM Attacker vs LLM Defender (Gemini 3.5 Flash)"
+  target: "all"
+  attacker: "llm"
+  defender: "llm"
+  duration: 60
+  episodes: 10
+  seed: 42
+  use_physical_hardware: true
+  expected_state: "service_available"
+  tags: ["llm_vs_llm", "generative_duel", "gemini_3.5_flash", "thesis_pinnacle"]
+  description: >
+    Pits a generative red-team offensive agent against a generative blue-team defensive
+    SOC agent, both driven by Google Gemini 3.5 Flash with live physical ESP8266 IoT hardware
+    in the loop. Evaluates generative attack innovation against generative defense resilience
+    and service availability maintenance.
+
+hypothesis:
+  text: >
+    The Gemini LLM defender will identify and mitigate Gemini-generated cyber kill-chain
+    tactics with a detection rate of at least 60% while maintaining mean service availability above 0.75.
+  metric: "detection_rate"
+  threshold: 0.60
+  direction: "above"

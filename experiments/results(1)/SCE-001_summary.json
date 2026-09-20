@@ -1,0 +1,38 @@
+{
+  "experiment_id": "SCE-001",
+  "name": "Deterministic Baseline",
+  "attacker": "scripted",
+  "defender": "static",
+  "episodes": 5,
+  "duration": 60,
+  "seed": 42,
+  "steady_state": {
+    "verified": true,
+    "mean_availability": 1.0,
+    "availability_std": 0.0,
+    "mean_failed_auth_rate": 0.0,
+    "samples_analyzed": 5
+  },
+  "hypothesis_result": {
+    "metric": "detection_rate",
+    "text": "The static defender will detect predictable scripted kill-chains with at least 50% detection rate without compromising service availability.",
+    "threshold": 0.5,
+    "direction": "above",
+    "observed_mean": 0.83,
+    "ci_95": [
+      0.6482,
+      1.0118
+    ],
+    "verdict": "PASS",
+    "passed": true
+  },
+  "aggregate_metrics": {
+    "attack_success_rate": 0.18666666666666668,
+    "detection_rate": 0.8299999999999998,
+    "precision": 0.8586206896551725,
+    "recall": 1.0,
+    "f1_score": 0.9177872879118556,
+    "service_availability": 1.0,
+    "intervention_cost": 870.0
+  }
+}

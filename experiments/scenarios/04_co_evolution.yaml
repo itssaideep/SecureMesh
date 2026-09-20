@@ -12,6 +12,7 @@ experiment:
   duration: 60
   episodes: 25
   seed: 42
+  use_physical_hardware: true
   expected_state: "service_available"
   tags: ["co_evolution", "ppo_vs_rl", "game_theory", "thesis_core"]
   description: >

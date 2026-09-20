@@ -30,7 +30,7 @@ class PPOAttacker(BaseAgent):
         vf_lr: float = 1e-3,
         train_epochs: int = 4,
         batch_size: int = 32,
-        entropy_coef: float = 0.02,
+        entropy_coef: float = 0.05,
         seed: int = 0,
     ):
         self.ppo = PPOCore(

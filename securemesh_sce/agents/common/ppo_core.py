@@ -33,7 +33,7 @@ class PPOCore:
         gamma: float = 0.99,
         lam: float = 0.95,
         clip_eps: float = 0.2,
-        pi_lr: float = 3e-4,
+        pi_lr: float = 1e-3,
         vf_lr: float = 1e-3,
         train_epochs: int = 4,
         batch_size: int = 32,

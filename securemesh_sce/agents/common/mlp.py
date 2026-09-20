@@ -51,6 +51,13 @@ class NumpyMLP:
             )
             self.biases.append(np.zeros(fan_out, dtype=np.float32))
 
+        # Adam optimizer state
+        self.m_w: List[np.ndarray] = [np.zeros_like(w) for w in self.weights]
+        self.v_w: List[np.ndarray] = [np.zeros_like(w) for w in self.weights]
+        self.m_b: List[np.ndarray] = [np.zeros_like(b) for b in self.biases]
+        self.v_b: List[np.ndarray] = [np.zeros_like(b) for b in self.biases]
+        self._step_count: int = 0
+
     @property
     def n_layers(self) -> int:
         return len(self.weights)
@@ -128,18 +135,32 @@ class NumpyMLP:
         db_list: List[np.ndarray],
         lr: float,
         ascend: bool = False,
+        beta1: float = 0.9,
+        beta2: float = 0.999,
+        eps: float = 1e-8,
     ):
-        """Apply gradient update (SGD).
+        """Apply gradient update using Adam optimizer.
 
         Parameters
         ----------
         ascend : bool
             If True, perform gradient ascent (for policy optimisation).
         """
+        self._step_count += 1
         sign = 1.0 if ascend else -1.0
+        t = self._step_count
+        bc1 = 1.0 - beta1 ** t
+        bc2 = 1.0 - beta2 ** t
+        step_lr = lr * (np.sqrt(bc2) / bc1) if bc1 > 0 else lr
+
         for i in range(self.n_layers):
-            self.weights[i] += sign * lr * dw_list[i]
-            self.biases[i] += sign * lr * db_list[i]
+            self.m_w[i] = beta1 * self.m_w[i] + (1.0 - beta1) * dw_list[i]
+            self.v_w[i] = beta2 * self.v_w[i] + (1.0 - beta2) * (dw_list[i] ** 2)
+            self.weights[i] += sign * step_lr * self.m_w[i] / (np.sqrt(self.v_w[i]) + eps)
+
+            self.m_b[i] = beta1 * self.m_b[i] + (1.0 - beta1) * db_list[i]
+            self.v_b[i] = beta2 * self.v_b[i] + (1.0 - beta2) * (db_list[i] ** 2)
+            self.biases[i] += sign * step_lr * self.m_b[i] / (np.sqrt(self.v_b[i]) + eps)
 
     # ---- Persistence ----
 
@@ -154,6 +175,11 @@ class NumpyMLP:
     def load_state_dict(self, state: dict):
         self.weights = [np.array(w, dtype=np.float32) for w in state["weights"]]
         self.biases = [np.array(b, dtype=np.float32) for b in state["biases"]]
+        self.m_w = [np.zeros_like(w) for w in self.weights]
+        self.v_w = [np.zeros_like(w) for w in self.weights]
+        self.m_b = [np.zeros_like(b) for b in self.biases]
+        self.v_b = [np.zeros_like(b) for b in self.biases]
+        self._step_count = 0
 
     def save(self, path: str):
         with open(path, "w") as f:

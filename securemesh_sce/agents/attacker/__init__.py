@@ -8,9 +8,12 @@ Attackers:
 
 from .scripted import BaseAgent, ScriptedAttacker
 from .ppo import PPOAttacker
+from .llm import LLMAttacker
 
 __all__ = [
     "BaseAgent",
     "ScriptedAttacker",
     "PPOAttacker",
+    "LLMAttacker",
 ]
+

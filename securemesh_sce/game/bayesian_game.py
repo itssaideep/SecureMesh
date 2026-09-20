@@ -14,6 +14,7 @@ Key design decisions:
 
 from __future__ import annotations
 
+import os
 import random
 from dataclasses import dataclass, field
 from typing import Tuple, Dict, Any, Optional, List
@@ -67,6 +68,10 @@ class SCEScenario:
     # IDS
     ids_base_sensitivity: float = 0.5
 
+    # Hardware (Pure physical hardware mode)
+    use_physical_hardware: bool = True
+    hardware_ip: Optional[str] = None
+
     # Reward weights
     attacker_reward_weights: AttackerRewardWeights = field(
         default_factory=AttackerRewardWeights
@@ -119,6 +124,18 @@ class BayesianGameEnv(gym.Env):
         self._attacker_type: AttackerType = AttackerType.OPPORTUNISTIC
         self._attacker_type_idx: int = 0
         self._security_stage = SecurityStage.NORMAL
+
+        # Physical hardware bridge (MANDATORY: Pure physical hardware mode)
+        self.use_physical_hardware = True
+        device_ip = self.scenario.hardware_ip or os.getenv("ESP8266_DEVICE_IP", "192.168.0.111")
+        from ..environment.iot.hardware_bridge import PhysicalESP8266Bridge
+        self.hardware_bridge = PhysicalESP8266Bridge(device_ip=device_ip, timeout=2.5)
+        if not self.hardware_bridge.is_reachable():
+            raise RuntimeError(
+                f"PURE PHYSICAL HARDWARE MODE: ESP8266 at {device_ip} is not reachable! "
+                f"Simulation mode has been removed. Ensure the physical hardware device is powered on "
+                f"and connected to the network."
+            )
 
         # Step tracking
         self.current_step = 0
@@ -189,6 +206,15 @@ class BayesianGameEnv(gym.Env):
         self._atk_obs_dim = len(atk_obs)
         self._def_obs_dim = len(def_obs)
 
+        # Fetch physical hardware status if available
+        if self.hardware_bridge and "iot_0" in self._network_state.get("iot_devices", {}):
+            try:
+                hw_tel = self.hardware_bridge.get_hardware_telemetry()
+                if hw_tel and hw_tel.get("reachable"):
+                    self._network_state["iot_devices"]["iot_0"]["telemetry"] = hw_tel
+            except Exception:
+                pass
+
         info = {
             "attacker_type": self._attacker_type.value,
             "attacker_type_idx": self._attacker_type_idx,
@@ -226,6 +252,19 @@ class BayesianGameEnv(gym.Env):
         atk_action = list(AttackerAction)[atk_idx % N_ATTACKER_ACTIONS]
         def_action = list(DefenderAction)[def_idx % N_DEFENDER_ACTIONS]
 
+        # --- Hardware probe if physical hardware is active ---
+        hw_probe = None
+        if self.hardware_bridge:
+            try:
+                if atk_action == AttackerAction.EXPLOIT_IOT:
+                    hw_probe = self.hardware_bridge.test_honeypot_exploit(cmd="id")
+                elif atk_action in (AttackerAction.AUTH_BRUTEFORCE, AttackerAction.AUTH_CREDENTIAL_STUFF):
+                    hw_probe = self.hardware_bridge.test_honeypot_login(username="admin", password="password123")
+                elif atk_action in (AttackerAction.RECON_SCAN, AttackerAction.RECON_FINGERPRINT):
+                    hw_probe = self.hardware_bridge.get_hardware_telemetry()
+            except Exception as e:
+                hw_probe = {"error": str(e)}
+
         # --- Resolve attacker action ---
         outcome = self.transition_engine.resolve_attacker(
             action=atk_action,
@@ -250,6 +289,7 @@ class BayesianGameEnv(gym.Env):
 
         # --- Update risk state ---
         self._update_risk_state(outcome)
+        outcome.service_availability = self.risk_state.service_availability
 
         # --- Compute rewards ---
         atk_r = attacker_reward(outcome, self.scenario.attacker_reward_weights)
@@ -282,6 +322,7 @@ class BayesianGameEnv(gym.Env):
             "security_stage": self._security_stage.name,
             "service_availability": self.risk_state.service_availability,
             "cumulative_impact": self.risk_state.cumulative_impact,
+            "hardware_probe": hw_probe,
         }
 
         self._step_log.append(info)
@@ -375,12 +416,17 @@ class BayesianGameEnv(gym.Env):
                 self._network_state["iot_devices"][d]["compromised"] = False
 
         elif def_action == DefenderAction.RESTORE_SERVICE:
-            # Restore one isolated host
-            isolated = [h for h, hd in self._network_state["hosts"].items()
-                        if hd["isolated"]]
-            if isolated:
-                h = self.rng.choice(isolated)
+            # Restore isolated hosts and IoT devices
+            isolated_hosts = [h for h, hd in self._network_state["hosts"].items()
+                              if hd.get("isolated", False)]
+            if isolated_hosts:
+                h = self.rng.choice(isolated_hosts)
                 self._network_state["hosts"][h]["isolated"] = False
+            isolated_iot = [d for d, dd in self._network_state["iot_devices"].items()
+                            if dd.get("isolated", False)]
+            if isolated_iot:
+                d = self.rng.choice(isolated_iot)
+                self._network_state["iot_devices"][d]["isolated"] = False
 
         elif def_action == DefenderAction.TERMINATE_SESSION:
             for hd in self._network_state["hosts"].values():

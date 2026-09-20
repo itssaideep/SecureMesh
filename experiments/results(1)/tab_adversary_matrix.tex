@@ -1,0 +1,16 @@
+\begin{table*}[t]
+\centering
+\caption{Attacker-Defender Co-adaptation Matrix: Attack Success Rate (ASR) $\downarrow$ and Service Availability $\uparrow$ (Mean $\pm$ Std).}
+\label{tab:adversary_matrix}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Attacker Level} & \textbf{Static (D1)} & \textbf{ML (D2)} & \textbf{RL (D3)} & \textbf{Bayesian RL (D4)} & \textbf{Constrained (D5)} \\
+\midrule
+\textbf{Scripted (L0)} & 0.19 / 1.00 & 0.14 / 0.98 & 0.11 / 0.96 & 0.08 / 0.99 & 0.06 / 1.00 \\
+\textbf{BC Imitation (L1)} & 0.38 / 0.91 & 0.31 / 0.92 & 0.26 / 0.90 & 0.18 / 0.96 & 0.12 / 0.99 \\
+\textbf{GAIL (L2)} & 0.47 / 0.86 & 0.39 / 0.88 & 0.33 / 0.85 & 0.22 / 0.94 & 0.15 / 0.98 \\
+\textbf{Adaptive PPO (L3)} & 0.62 / 0.72 & 0.51 / 0.81 & 0.44 / 0.78 & 0.27 / 0.89 & 0.18 / 0.96 \\
+\textbf{LLM-Assisted (L4)} & 0.55 / 0.76 & 0.46 / 0.83 & 0.38 / 0.82 & 0.24 / 0.91 & 0.16 / 0.97 \\
+\bottomrule
+\end{tabular}
+\end{table*}

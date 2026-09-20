@@ -16,7 +16,7 @@ from typing import Dict, Any, Optional
 class PhysicalESP8266Bridge:
     """Bridge for querying and interacting with a physical ESP8266 honeypot device."""
 
-    def __init__(self, device_ip: Optional[str] = None, port: int = 80, timeout: float = 2.0):
+    def __init__(self, device_ip: Optional[str] = None, port: int = 80, timeout: float = 5.0):
         if not device_ip:
             device_ip = os.getenv("ESP8266_DEVICE_IP", "127.0.0.1")
         self.device_ip = device_ip
@@ -26,11 +26,15 @@ class PhysicalESP8266Bridge:
 
     def is_reachable(self) -> bool:
         """Check if the physical device is online on the local network."""
-        try:
-            r = requests.get(f"{self.base_url}/status", timeout=self.timeout)
-            return r.status_code == 200
-        except Exception:
-            return False
+        for _ in range(2):
+            try:
+                r = requests.get(f"{self.base_url}/status", timeout=self.timeout)
+                if r.status_code == 200:
+                    return True
+            except Exception:
+                time.sleep(0.5)
+        return False
+
 
     def get_hardware_telemetry(self) -> Optional[Dict[str, Any]]:
         """Fetch live free heap, RSSI, and uptime directly from physical hardware."""
@@ -46,7 +50,7 @@ class PhysicalESP8266Bridge:
         return {"reachable": False, "device": "ESP8266", "error": "Unreachable"}
 
     def test_honeypot_login(self, username: str = "admin", password: str = "123456") -> Dict[str, Any]:
-        """Simulate an attack probe against the physical device."""
+        """Simulate an authentication attack probe against the physical device."""
         try:
             r = requests.post(
                 f"{self.base_url}/login",
@@ -56,3 +60,16 @@ class PhysicalESP8266Bridge:
             return {"status_code": r.status_code, "response": r.text}
         except Exception as e:
             return {"error": str(e)}
+
+    def test_honeypot_exploit(self, cmd: str = "id") -> Dict[str, Any]:
+        """Simulate a CGI command injection exploit probe against the physical device."""
+        try:
+            r = requests.get(
+                f"{self.base_url}/cgi-bin/status",
+                params={"cmd": cmd},
+                timeout=self.timeout,
+            )
+            return {"status_code": r.status_code, "response": r.text}
+        except Exception as e:
+            return {"error": str(e)}
+

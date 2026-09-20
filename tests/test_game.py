@@ -78,3 +78,22 @@ def test_reward_penalizes_blind_shutdown():
     )
     r_def = defender_reward(outcome, weights)
     assert r_def < 0.0, "Unnecessary network shutdown must be penalised"
+
+
+def test_continuous_availability_penalty():
+    # If service availability remains low (e.g. 0.125), defender must be penalized every step
+    outcome_degraded = StepOutcome(
+        service_maintained=False,
+        service_down=False,  # Not a transition step
+        service_availability=0.125,
+    )
+    outcome_healthy = StepOutcome(
+        service_maintained=True,
+        service_down=False,
+        service_availability=1.0,
+    )
+    r_degraded = defender_reward(outcome_degraded)
+    r_healthy = defender_reward(outcome_healthy)
+    assert r_degraded < r_healthy, "Degraded availability must yield lower reward than healthy state"
+    assert r_degraded < 0.0, "Staying in degraded state must yield negative ongoing reward"
+

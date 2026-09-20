@@ -19,3 +19,6 @@ esp8266/secrets.h
 .pio/
 *.bin
 
+# Research notes (private, not tracked)
+RESEARCH_RESULTS.txt
+
